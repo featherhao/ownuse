@@ -1,11 +1,7 @@
-//原作者地址 https://raw.githubusercontent.com/666zmy/MoonTV/refs/heads/main/config.json
-//转换地址：https://base58.52zy.eu.org/
-
-
-
 {
     "cache_time": 9200,
     "api_site": {
+         "_comment": "//原作者地址 https://raw.githubusercontent.com/666zmy/MoonTV/refs/heads/main/config.json,/////转换地址：https://base58.52zy.eu.org/",
         "api_1": {
             "name": "TV-1080资源",
             "api": "https://api.1080zyku.com/inc/api_mac10.php",
