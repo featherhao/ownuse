@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>链接管理</title>
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 0; background: #f6f7f9; }
+  header { display:flex; align-items:center; justify-content:space-between; padding: 12px 16px; background:#fff; border-bottom:1px solid #edf0f2; }
+  h2 { margin:0; font-size:18px; font-weight:600; }
+  .wrap { max-width: 900px; margin: 24px auto; background: #fff; padding: 16px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,.06); }
+  table { width:100%; border-collapse: collapse; }
+  th, td { padding:8px 10px; border-bottom:1px solid #f0f0f0; text-align:left; }
+  input, select { padding: 6px 8px; border:1px solid #d0d7de; border-radius:8px; }
+  button { padding: 6px 10px; background:#1677ff; color:#fff; border:0; border-radius:8px; cursor:pointer; }
+  .btn-danger { background:#e5484d; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 12px; }
+  .msg { color:#c00; min-height:20px; }
+</style>
+</head>
+<body>
+  <header>
+    <h2>链接管理</h2>
+    <div>
+      <button id="btnRefresh" onclick="loadLinks()">刷新</button>
+      <button id="btnLogout" onclick="logout()" class="btn-danger">退出登录</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="row">
+      <input id="name" placeholder="名称" style="flex:1 1 200px;">
+      <input id="api" placeholder="API 地址 (http/https)" style="flex:3 1 420px;">
+      <button onclick="addLink()">新增</button>
+    </div>
+    <div class="msg" id="msg"></div>
+    <table id="tbl">
+      <thead><tr><th>键</th><th>名称</th><th>API</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+<script>
+async function loadLinks() {
+  const msg = document.getElementById('msg'); msg.textContent = '';
+  const tbody = document.querySelector('#tbl tbody'); tbody.innerHTML = '';
+  try {
+    const r = await fetch('/api/links');
+    if (r.status === 401) { location.href = '/'; return; }
+    const data = await r.json();
+    const site = data.api_site || {};
+    for (const k in site) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>'+escapeHtml(k)+'</td>'+
+        '<td><input value="'+escapeAttr(site[k].name || '')+'" data-k="'+escapeAttr(k)+'" class="inp-name"></td>'+
+        '<td><input value="'+escapeAttr(site[k].api || '')+'" data-k="'+escapeAttr(k)+'" class="inp-api" style="width:100%"></td>'+
+        '<td>'+
+        '<button onclick="saveRow(\''+escapeJs(k)+'\')">保存</button> '+
+        '<button class="btn-danger" onclick="delRow(\''+escapeJs(k)+'\')">删除</button>'+
+        '</td>';
+      tbody.appendChild(tr);
+    }
+  } catch (e) { msg.textContent = '加载失败：'+e.message; }
+}
+
+async function addLink() {
+  const msg = document.getElementById('msg'); msg.textContent = '';
+  const name = document.getElementById('name').value.trim();
+  const api = document.getElementById('api').value.trim();
+  if (!name || !api) { msg.textContent = '名称与 API 必填'; return; }
+  try {
+    const r = await fetch('/api/links', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ name, api }) });
+    if (!r.ok) { msg.textContent = await r.text() || '新增失败'; return; }
+    document.getElementById('name').value = '';
+    document.getElementById('api').value = '';
+    loadLinks();
+  } catch (e) { msg.textContent = '新增失败：'+e.message; }
+}
+
+async function saveRow(k) {
+  const msg = document.getElementById('msg'); msg.textContent = '';
+  const name = document.querySelector('.inp-name[data-k="'+CSS.escape(k)+'"]').value.trim();
+  const api = document.querySelector('.inp-api[data-k="'+CSS.escape(k)+'"]').value.trim();
+  try {
+    const r = await fetch('/api/links/'+encodeURIComponent(k), { method:'PUT', headers:{'content-type':'application/json'}, body: JSON.stringify({ name, api }) });
+    if (!r.ok) { msg.textContent = await r.text() || '保存失败'; return; }
+    loadLinks();
+  } catch (e) { msg.textContent = '保存失败：'+e.message; }
+}
+
+async function delRow(k) {
+  const msg = document.getElementById('msg'); msg.textContent = '';
+  if (!confirm('确定删除 '+k+' ?')) return;
+  try {
+    const r = await fetch('/api/links/'+encodeURIComponent(k), { method:'DELETE' });
+    if (!r.ok) { msg.textContent = await r.text() || '删除失败'; return; }
+    loadLinks();
+  } catch (e) { msg.textContent = '删除失败：'+e.message; }
+}
+
+async function logout() {
+  try { await fetch('/api/logout', { method:'POST' }); } catch(_){}
+  location.href = '/';
+}
+
+function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+function escapeAttr(s){return escapeHtml(s).replace(/"/g,'&quot;');}
+function escapeJs(s){return String(s||'').replace(/[\\'"\n\r]/g,m=>({"\\":"\\\\","'":"\\'","\"":"\\\"","\n":"\\n","\r":"\\r"}[m]));}
+
+loadLinks();
+</script>
+</body>
+</html>
+
+
