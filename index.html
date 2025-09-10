@@ -1,126 +1,200 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<title>常用工具集合</title>
-<style>
-body{font-family:Arial;margin:40px}
-input,textarea{width:100%;max-width:500px;padding:10px;margin-bottom:10px;font-size:16px}
-button{padding:5px 10px;margin-left:5px;font-size:14px;cursor:pointer}
-.result{margin-top:20px;word-break:break-all}
-li{margin-bottom:8px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用工具合集</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+            position: relative;
+        }
+        h1::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: #007bff;
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .tool-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #007bff;
+            border-radius: 8px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .tool-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        .tool-section h2 {
+            color: #007bff;
+            margin-top: 0;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .tool-section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .tool-section .button-group {
+            display: flex;
+            flex-wrap: wrap; /* 确保小屏幕上不溢出 */
+            gap: 10px;
+        }
+        .tool-section a, .tool-section button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .tool-section a:hover, .tool-section button:hover {
+            background-color: #0056b3;
+            transform: scale(1.03);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        #copy-feedback {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        #copy-feedback.show {
+            opacity: 1;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 30px;
+            }
+            .tool-section {
+                padding: 15px;
+            }
+            .tool-section h2 {
+                font-size: 1.3em;
+            }
+            .tool-section a, .tool-section button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>常用工具集合</h1>
+    <div class="container">
+        <h1>常用工具合集</h1>
 
-<div id="adminSection">
-  <input type="password" id="adminPassword" placeholder="管理员密码"/>
-  <button id="adminLogin">管理员登录</button>
-  <span id="adminStatus" style="color:green"></span>
-</div>
+        <div class="tool-section">
+            <h2>1. Base64 转换</h2>
+            <p>用于进行 Base64 编码和解码的在线工具，方便处理各种数据转换。</p>
+            <a href="https://base58.52zy.eu.org/" target="_blank">前往 Base64 转换工具</a>
+        </div>
 
-<h2>添加工具</h2>
-<input id="nameInput" placeholder="工具名称"/>
-<input id="urlInput" placeholder="工具链接"/>
-<button id="addBtn">添加工具</button>
+        <div class="tool-section">
+            <h2>2. TVBox 配置转 MoonTV</h2>
+            <p>将 TVBox 的配置链接转换为 MoonTV 兼容的格式，方便用户在不同播放器之间切换。</p>
+            <a href="jsontomoontv.html" target="_blank">前往 TVBox 配置转换工具</a>
+        </div>
 
-<h2>工具列表</h2>
-<ul id="toolList"></ul>
+        <div class="tool-section">
+            <h2>3. SH工具箱一键脚本</h2>
+            <p>moontv，libretv，rustdesk，勇哥脚本，等工具安装。</p>
+            <div class="button-group">
+                <a href="https://github.com/featherhao/test" target="_blank">仓库地址</a>
+                <button onclick="copyToClipboard('bash <(curl -fsSL https://raw.githubusercontent.com/featherhao/test/refs/heads/main/menu.sh)')">复制脚本</button>
+            </div>
+        </div>
 
-<script>
-let tools = []
-let isAdmin = false
-const listEl = document.getElementById('toolList')
-const nameInput = document.getElementById('nameInput')
-const urlInput = document.getElementById('urlInput')
-const addBtn = document.getElementById('addBtn')
-const adminLoginBtn = document.getElementById('adminLogin')
-const adminStatus = document.getElementById('adminStatus')
+        <div class="tool-section">
+            <h2>4. 新增工具名称</h2>
+            <p>这里填写新增工具的简要描述。</p>
+            <a href="您新增工具的链接" target="_blank">前往 新增工具</a>
+        </div>
 
-async function loadTools(){
-  const res = await fetch('/api/tools')
-  tools = await res.json()
-  renderTools()
-}
+        <div class="tool-section">
+            <h2>5. 新增工具名称</h2>
+            <p>这里填写新增工具的简要描述。</p>
+            <a href="您新增工具的链接" target="_blank">前往 新增工具</a>
+        </div>
 
-function renderTools(){
-  listEl.innerHTML = ''
-  tools.forEach((t,i)=>{
-    const li = document.createElement('li')
-    const nameLink = document.createElement('a')
-    nameLink.href=t.url
-    nameLink.target='_blank'
-    nameLink.textContent=t.name
-    li.appendChild(nameLink)
+        <div class="footer">
+            &copy; 常用工具合集. All Rights Reserved.
+        </div>
+    </div>
 
-    const descSpan = document.createElement('span')
-    descSpan.textContent = t.desc ? ` - ${t.desc}` : ''
-    li.appendChild(descSpan)
+    <div id="copy-feedback"></div>
 
-    if(isAdmin){
-      const editBtn = document.createElement('button')
-      editBtn.textContent='编辑说明'
-      editBtn.onclick = async ()=>{
-        const newDesc = prompt('请输入工具说明', t.desc||'')
-        if(newDesc!==null){
-          const res = await fetch('/api/tools', {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({ action:'edit', index:i, desc:newDesc, password: document.getElementById('adminPassword').value })
-          })
-          const data = await res.json()
-          if(data.success) loadTools()
-          else alert('编辑失败: '+(data.message||'未知错误'))
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                showFeedback('脚本已复制到剪贴板！');
+            }, function(err) {
+                console.error('无法复制文本: ', err);
+                showFeedback('复制失败，请手动复制。');
+            });
         }
-      }
-      li.appendChild(editBtn)
-
-      const delBtn = document.createElement('button')
-      delBtn.textContent='删除'
-      delBtn.onclick=async ()=>{
-        if(confirm('确定删除吗？')){
-          const res = await fetch('/api/tools',{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({action:'delete', index:i, password:document.getElementById('adminPassword').value})
-          })
-          const data = await res.json()
-          if(data.success) loadTools()
-          else alert('删除失败: '+(data.message||'未知错误'))
+        
+        function showFeedback(message) {
+            const feedbackElement = document.getElementById('copy-feedback');
+            feedbackElement.textContent = message;
+            feedbackElement.classList.add('show');
+            setTimeout(() => {
+                feedbackElement.classList.remove('show');
+            }, 2000);
         }
-      }
-      li.appendChild(delBtn)
-    }
-    listEl.appendChild(li)
-  })
-}
-
-addBtn.addEventListener('click', async ()=>{
-  if(!isAdmin) return alert('请先登录管理员')
-  const name = nameInput.value.trim()
-  const url = urlInput.value.trim()
-  const desc = prompt('请输入使用说明','')
-  if(!name || !url) return alert('请填写完整')
-  const res = await fetch('/api/tools', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ action:'add', name, url, desc, password: document.getElementById('adminPassword').value })
-  })
-  const data = await res.json()
-  if(data.success){
-    nameInput.value=''; urlInput.value=''
-    loadTools()
-  } else alert('添加失败：'+(data.message||'未知错误'))
-})
-
-adminLoginBtn.addEventListener('click',()=>{
-  isAdmin = true
-  adminStatus.textContent=' 已登录'
-  loadTools()
-})
-
-loadTools()
-</script>
+    </script>
 </body>
 </html>
