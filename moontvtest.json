@@ -1,16 +1,7 @@
 {
   "cache_time": 7200,
   "api_site": {
-    "1": {
-      "name": "♻️少儿频道1",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 1
-    },
-    "2": {
-      "name": "♻️搜狗(官源)",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 2
-    },
+   
     "api_1": {
       "name": "TV-1080资源",
       "api": "https://api.1080zyku.com/inc/api_mac10.php",
@@ -46,16 +37,7 @@
       "api": "https://ikunzyapi.com/api.php/provide/vod",
       "id": 9
     },
-    "api_8": {
-      "name": "TV-wujinapi无尽",
-      "api": "https://api.wujinapi.cc/api.php/provide/vod",
-      "id": 10
-    },
-    "api_9": {
-      "name": "TV-丫丫点播",
-      "api": "https://cj.yayazy.net/api.php/provide/vod",
-      "id": 11
-    },
+
     "api_10": {
       "name": "TV-光速资源",
       "api": "https://api.guangsuapi.com/api.php/provide/vod",
@@ -101,11 +83,7 @@
       "api": "https://api.wujinapi.me/api.php/provide/vod",
       "id": 20
     },
-    "api_20": {
-      "name": "TV-无尽资源",
-      "api": "https://api.wujinapi.net/api.php/provide/vod",
-      "id": 21
-    },
+
     "api_21": {
       "name": "TV-旺旺短剧",
       "api": "https://wwzy.tv/api.php/provide/vod",
@@ -126,41 +104,19 @@
       "api": "https://api.zuidapi.com/api.php/provide/vod",
       "id": 25
     },
-    "api_26": {
-      "name": "TV-樱花资源",
-      "api": "https://m3u8.apiyhzy.com/api.php/provide/vod",
-      "id": 26
-    },
-    "api_27": {
-      "name": "TV-步步高资源",
-      "api": "https://api.yparse.com/api/json",
-      "id": 27
-    },
-    "api_28": {
-      "name": "TV-牛牛点播",
-      "api": "https://api.niuniuzy.me/api.php/provide/vod",
-      "id": 28
-    },
+   
     "api_30": {
       "name": "AV-百万资源",
       "api": "https://api.bwzyz.com/api.php/provide/vod",
       "id": 29
     },
-    "api_31": {
-      "name": "TV-百度云资源",
-      "api": "https://api.apibdzy.com/api.php/provide/vod",
-      "id": 30
-    },
+ 
     "api_32": {
       "name": "TV-神马云",
       "api": "https://api.1080zyku.com/inc/apijson.php/",
       "id": 31
     },
-    "api_33": {
-      "name": "TV-索尼资源",
-      "api": "https://suoniapi.com/api.php/provide/vod",
-      "id": 32
-    },
+
     "api_34": {
       "name": "TV-红牛资源",
       "api": "https://www.hongniuzy2.com/api.php/provide/vod",
@@ -171,11 +127,7 @@
       "api": "https://caiji.maotaizy.cc/api.php/provide/vod",
       "id": 34
     },
-    "api_36": {
-      "name": "TV-虎牙资源",
-      "api": "https://www.huyaapi.com/api.php/provide/vod",
-      "id": 35
-    },
+ 
     "api_37": {
       "name": "TV-豆瓣资源",
       "api": "https://caiji.dbzy.tv/api.php/provide/vod",
@@ -211,11 +163,7 @@
       "api": "https://jyzyapi.com/api.php/provide/vod",
       "id": 42
     },
-    "api_44": {
-      "name": "TV-閃電资源",
-      "api": "https://sdzyapi.com/api.php/provide/vod",
-      "id": 43
-    },
+
     "api_45": {
       "name": "TV-非凡资源",
       "api": "https://cj.ffzyapi.com/api.php/provide/vod",
@@ -226,11 +174,7 @@
       "api": "https://p2100.net/api.php/provide/vod",
       "id": 45
     },
-    "api_47": {
-      "name": "TV-魔爪资源",
-      "api": "https://mozhuazy.com/api.php/provide/vod",
-      "id": 46
-    },
+
     "api_48": {
       "name": "TV-魔都动漫",
       "api": "https://caiji.moduapi.cc/api.php/provide/vod",
@@ -261,11 +205,7 @@
       "api": "https://lbapi9.com/api.php/provide/vod",
       "id": 52
     },
-    "api_57": {
-      "name": "AV-奥斯卡资源",
-      "api": "https://aosikazy.com/api.php/provide/vod",
-      "id": 53
-    },
+
     "api_58": {
       "name": "AV-奶香香",
       "api": "https://Naixxzy.com/api.php/provide/vod",
@@ -306,16 +246,7 @@
       "api": "https://api.sexnguon.com/api.php/provide/vod",
       "id": 61
     },
-    "api_68": {
-      "name": "AV-色猫资源",
-      "api": "https://api.maozyapi.com/inc/apijson_vod.php",
-      "id": 62
-    },
-    "api_69": {
-      "name": "AV-辣椒资源",
-      "api": "https://apilj.com/api.php/provide/vod",
-      "id": 63
-    },
+
     "api_70": {
       "name": "AV-香奶儿资源",
       "api": "https://www.gdlsp.com/api/json.php",
@@ -341,11 +272,7 @@
       "api": "https://jszyapi.com/api.php/provide/vod",
       "id": 68
     },
-    "mozhua": {
-      "name": "魔爪资源",
-      "api": "https://mozhuazy.com/api.php/provide/vod",
-      "id": 69
-    },
+
     "mdzy": {
       "name": "魔都资源",
       "api": "https://www.mdzyapi.com/api.php/provide/vod",
@@ -361,46 +288,19 @@
       "api": "https://cj.lziapi.com/api.php/provide/vod",
       "id": 72
     },
-    "huaweiba": {
-      "name": "华为吧资源",
-      "api": "https://huawei8.live/api.php/provide/vod",
-      "id": 73
-    },
+
     "hongniuziyuan": {
       "name": "红牛资源",
       "api": "https://www.hongniuzy3.com/api.php/provide/vod",
       "id": 74
     },
-    "suonisandian": {
-      "name": "索尼-闪电资源",
-      "api": "https://xsd.sdzyapi.com/api.php/provide/vod",
-      "id": 75
-    },
-    "yayaziyuan": {
-      "name": "鸭鸭资源",
-      "api": "https://cj.yayazy.net/api.php/provide/vod",
-      "id": 76
-    },
+
     "jinyingziyuan": {
       "name": "金鹰资源采集网",
       "api": "https://jyzyapi.com/provide/vod",
       "id": 77
     },
-    "fengchao": {
-      "name": "蜂巢片库",
-      "api": "https://api.fczy888.me/api.php/provide/vod",
-      "id": 78
-    },
-    "jinmaziyuan2": {
-      "name": "金马资源网",
-      "api": "https://api.jmzy.com/api.php/provide/vod",
-      "id": 79
-    },
-    "dadiziy": {
-      "name": "大地资源网络",
-      "api": "https://dadiapi.com/api.php/provide/vod",
-      "id": 80
-    },
+
     "huangseziy": {
       "name": "黄色资源啊啊",
       "api": "https://hsckzy888.com/api.php/provide/vod",
@@ -411,101 +311,28 @@
       "api": "https://api.xiaojizy.live/provide/vod",
       "id": 82
     },
-    "kauicheziyuan": {
-      "name": "快车资源阿",
-      "api": "https://caiji.kuaichezy.org/api.php/provide",
-      "id": 83
-    },
+
     "xinlangaa": {
       "name": "新浪资源阿",
       "api": "https://api.xinlangapi.com/xinlangapi.php/provide/vod",
       "id": 84
     },
-    "lajiaoziyu": {
-      "name": "辣椒资源黄黄",
-      "api": "https://apilj.com/api.php/provide",
-      "id": 85
-    },
-    "youzhidianying": {
-      "name": "优质资源库1080zyk6.com高清",
-      "api": "https://api.yzzy-api.com/inc/ldg_api_all.php/provide/vod",
-      "id": 86
-    },
+
     "xibaocaiji": {
       "name": "细胞采集黄色",
       "api": "https://www.xxibaozyw.com/api.php/provide/vod",
       "id": 87
     },
-    "qiqiqiqi": {
-      "name": "七七影视",
-      "api": "https://www.qiqidys.com/api.php/provide/vod/",
-      "id": 88
-    },
+
     "yingshigongchang": {
       "name": "影视工厂",
       "api": "https://cj.lziapi.com/api.php/provide/vod/",
       "id": 89
     },
-    "js_": {
-      "name": "豆瓣|推荐",
-      "api": "https://api.hgyx.vip/HGBOX/JS/lib/drpy.min.js",
-      "id": 90
-    },
-    "csp_xml_": {
-      "name": "🐝索尼资源",
-      "api": "https://suoniapi.com/api.php/provide/vod/from/snm3u8/",
-      "id": 91
-    },
-    "csp_xml_-4": {
-      "name": "🐝暴风资源",
-      "api": "https://bfzyapi.com/api.php/provide/vod/?ac=list",
-      "id": 92
-    },
-    "js": {
-      "name": "♻️豆瓣┃公众号:业余打发。",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 93
-    },
-    "": {
-      "name": "♻️畅梦秒播",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 94
-    },
-    "dr_": {
-      "name": "♻️低端(drpy)",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 95
-    },
-    "dr_-1": {
-      "name": "♻️武享吧(drpy)",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 96
-    },
-    "snzy": {
-      "name": "♻️索尼资源 ",
-      "api": "https://suoniapi.com/api.php/provide/vod/?ac=list",
-      "id": 97
-    },
-    "drpy_js_1": {
-      "name": "♻️优酷(官源)",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 98
-    },
-    "2-1": {
-      "name": "♻️腾讯(官源)",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 99
-    },
-    "-1": {
-      "name": "♻️爱奇艺(官源)",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 100
-    },
-    "-2": {
-      "name": "♻️快车.云播",
-      "api": "https://caiji.kczyapi.com/api.php/provide/vod/",
-      "id": 101
-    },
+   
+
+
+    
     "-3": {
       "name": "♻️卧龙.云播",
       "api": "https://collect.wolongzyw.com/api.php/provide/vod/",
@@ -515,106 +342,9 @@
       "name": "♻️光速.云播",
       "api": "https://api.guangsuapi.com/api.php/provide/vod/",
       "id": 103
-    },
-    "-6": {
-      "name": "♻️天空.云播",
-      "api": "https://api.tiankongapi.com/api.php/provide/vod/",
-      "id": 104
-    },
-    "-8": {
-      "name": "♻️百度.云播",
-      "api": "https://api.apibdzy.com/api.php/provide/vod/",
-      "id": 105
-    },
-    "js77": {
-      "name": "♻️酷云77",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 106
-    },
-    "drpy_js_": {
-      "name": "♻️油库",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 107
-    },
-    "js_b": {
-      "name": "♻️哔哩",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 108
-    },
-    "-15": {
-      "name": "♻️量子",
-      "api": "https://cj.lziapi.com/api.php/provide/vod/at/xml/",
-      "id": 109
-    },
-    "nt": {
-      "name": "♻️拿铁动漫",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 110
-    },
-    "-17": {
-      "name": "♻️妮可动漫",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 111
-    },
-    "drpy_js_justlive": {
-      "name": "♻️JustLive",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 112
-    },
-    "drpy_js_-1": {
-      "name": "♻️虎牙直播",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 113
-    },
-    "drpy_js_-2": {
-      "name": "♻️斗鱼直播",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 114
-    },
-    "drpy_js_-3": {
-      "name": "♻️博看听书",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 115
-    },
-    "drpy_js_-4": {
-      "name": "♻️喜马拉雅",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 116
-    },
-    "88js": {
-      "name": "♻️88看球",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 117
-    },
-    "-18": {
-      "name": "🌏以下是“少儿频道”专区🌏",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/协议.js",
-      "id": 118
-    },
-    "1-1": {
-      "name": "♻️少儿频道2",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 119
-    },
-    "1-2": {
-      "name": "♻️少儿频道3",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 120
-    },
-    "1-3": {
-      "name": "♻️少儿频道4",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 121
-    },
-    "-19": {
-      "name": "♻️童趣",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/drpy2.min.js",
-      "id": 122
-    },
-    "ext_live_protocol": {
-      "name": "♻️关注公众号“业余打发”。",
-      "api": "https://jihulab.com/yydfys/yydf/-/raw/main/yydf/lib/协议.js",
-      "id": 123
     }
+  
+   
+
   }
 }
