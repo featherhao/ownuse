@@ -2,80 +2,65 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta charset="UTF-8">
 <title>常用工具集合</title>
 <style>
-body { font-family: Arial, sans-serif; margin: 40px; background:#f9f9f9; }
-h1 { color: #333; }
-ul { list-style: none; padding: 0; }
-li { margin: 15px 0; }
-a { text-decoration: none; color: #1a73e8; font-size: 18px; }
-a:hover { text-decoration: underline; }
-button { margin-left: 10px; padding: 5px 10px; cursor: pointer; }
+body{font-family:Arial;margin:40px}h1{color:#333}ul{list-style:none;padding:0}li{margin-bottom:10px}a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
 <h1>常用工具集合</h1>
-<ul id="toolList"></ul>
-<button onclick="showAdminLogin()">管理员登录</button>
+<ul id="toolsList"></ul>
+
+<h2>管理员添加新工具</h2>
+<input id="toolName" placeholder="工具名称" />
+<input id="toolUrl" placeholder="工具链接" />
+<input type="password" id="adminPassword" placeholder="管理员密码" />
+<button id="addToolBtn">添加工具</button>
 
 <script>
-// 默认工具列表
-let tools = [
-  { name: "JSON Base58 转换器", url: "https://base58.52zy.eu.org" },
-  { name: "TVBox → MoonTV 配置转换器", url: "jsontomoontv.html" }
-];
+const listEl = document.getElementById('toolsList')
+const nameInput = document.getElementById('toolName')
+const urlInput = document.getElementById('toolUrl')
+const pwdInput = document.getElementById('adminPassword')
+const btn = document.getElementById('addToolBtn')
 
-// 从 LocalStorage 加载自定义工具
-if(localStorage.getItem('customTools')){
-  const custom = JSON.parse(localStorage.getItem('customTools'));
-  tools = tools.concat(custom);
+async function loadTools() {
+  const res = await fetch('/api/tools')
+  const tools = await res.json()
+  listEl.innerHTML = ''
+  tools.forEach(t => {
+    const li = document.createElement('li')
+    const a = document.createElement('a')
+    a.href = t.url
+    a.target = '_blank'
+    a.textContent = t.name
+    li.appendChild(a)
+    listEl.appendChild(li)
+  })
 }
 
-// 渲染工具列表
-function renderTools() {
-  const ul = document.getElementById('toolList');
-  ul.innerHTML = '';
-  tools.forEach(tool => {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = tool.url;
-    a.target = "_blank";
-    a.textContent = tool.name;
-    li.appendChild(a);
-    ul.appendChild(li);
-  });
-}
-renderTools();
+btn.addEventListener('click', async () => {
+  const name = nameInput.value.trim()
+  const url = urlInput.value.trim()
+  const password = pwdInput.value
+  if(!name || !url || !password){ alert('请填写完整'); return }
 
-// 管理员登录
-function showAdminLogin() {
-  const pwd = prompt("请输入管理员密码:");
-  if(pwd === "admin123"){ // 可自定义密码
-    showAdminPanel();
+  const res = await fetch('/api/tools', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ name, url, password })
+  })
+  const data = await res.json()
+  if(data.success){
+    alert('添加成功')
+    nameInput.value=''; urlInput.value=''; pwdInput.value=''
+    loadTools()
   } else {
-    alert("密码错误");
+    alert('添加失败：'+(data.message||'未知错误'))
   }
-}
+})
 
-// 管理面板
-function showAdminPanel() {
-  const name = prompt("请输入新工具名称:");
-  if(!name) return;
-  const url = prompt("请输入新工具链接:");
-  if(!url) return;
-  const newTool = { name, url };
-  
-  // 保存到 LocalStorage
-  let customTools = localStorage.getItem('customTools') ? JSON.parse(localStorage.getItem('customTools')) : [];
-  customTools.push(newTool);
-  localStorage.setItem('customTools', JSON.stringify(customTools));
-  
-  // 更新页面
-  tools.push(newTool);
-  renderTools();
-  alert("添加成功！");
-}
+loadTools()
 </script>
 </body>
 </html>
