@@ -2,5 +2,5 @@ name = "my-tools-worker"
 main = "worker.js"
 compatibility_date = "2025-09-10"
 kv_namespaces = [
-  { binding = "TOOLS", id = "your-kv-namespace-id" }
+  { binding = "TOOLS", id = "ownuse" }
 ]
