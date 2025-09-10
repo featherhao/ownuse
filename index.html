@@ -68,7 +68,7 @@
         }
         .tool-section .button-group {
             display: flex;
-            flex-wrap: wrap; /* 确保小屏幕上不溢出 */
+            flex-wrap: wrap;
             gap: 10px;
         }
         .tool-section a, .tool-section button {
@@ -82,10 +82,17 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 16px; /* 增大字体 */
         }
         .tool-section a:hover, .tool-section button:hover {
             background-color: #0056b3;
             transform: scale(1.03);
+        }
+        .copy-button {
+            background-color: #28a745 !important; /* 绿色按钮 */
+        }
+        .copy-button:hover {
+            background-color: #218838 !important; /* 深绿色悬停效果 */
         }
         .footer {
             text-align: center;
@@ -98,7 +105,7 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: #28a745; /* 绿色提示条 */
             color: #fff;
             padding: 10px 20px;
             border-radius: 5px;
@@ -154,7 +161,7 @@
             <p>moontv，libretv，rustdesk，勇哥脚本，等工具安装。</p>
             <div class="button-group">
                 <a href="https://github.com/featherhao/test" target="_blank">仓库地址</a>
-                <button onclick="copyToClipboard('bash <(curl -fsSL https://raw.githubusercontent.com/featherhao/test/refs/heads/main/menu.sh)')">复制脚本</button>
+                <button class="copy-button" onclick="copyToClipboard('bash <(curl -fsSL https://raw.githubusercontent.com/featherhao/test/refs/heads/main/menu.sh)')">复制脚本</button>
             </div>
         </div>
 
