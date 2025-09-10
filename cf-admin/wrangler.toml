@@ -1,20 +1,19 @@
 name = "cf-admin"
 compatibility_date = "2024-03-20"
 
-[build]
-command = ""                  # 无构建命令
-cwd = "cf-admin"              # Pages 构建上下文在子目录
-watch_dir = "public"          # 静态文件目录（相对于 cwd）
-functions = "./functions"      # Functions 目录（相对于 cwd）
+# Pages 部署配置
+[pages_build_output]
+# 这里的 dir 和 functions 路径是相对于 wrangler.toml 所在的目录
+dir = "public"
+functions = "functions"
 
+# 环境变量
 [vars]
 ADMIN_USER = "admin"
 ADMIN_PASS = "change-me"
 SESSION_SECRET = "please-change-this-to-a-random-secret"
 
-
+# KV 绑定
 [[kv_namespaces]]
 binding = "KV"
-id = "3d741a5137554831a6443233798472d4"  # 你的 KV Namespace ID
-
-
+id = "3d741a5137554831a6443233798472d4"
