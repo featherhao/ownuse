@@ -1,6 +1,13 @@
 name = "cf-admin"
 compatibility_date = "2024-03-20"
 
+# Pages Functions 配置
+[build]
+command = ""              # 你没构建命令，保持空
+cwd = "."                 # 仓库根目录
+watch_dir = "public"      # 静态文件目录
+functions = "cf-admin/functions"  # 指定 Functions 目录
+
 [vars]
 ADMIN_USER = "admin"
 ADMIN_PASS = "change-me"
@@ -8,6 +15,6 @@ SESSION_SECRET = "please-change-this-to-a-random-secret"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "YOUR_KV_NAMESPACE_ID"
+id = "3d741a5137554831a6443233798472d4"  # 你的 KV Namespace ID
 
 
