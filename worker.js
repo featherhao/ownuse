@@ -9,6 +9,7 @@ const DEFAULT_TOOLS = [
 
 async function handleRequest(request){
   const url = new URL(request.url)
+  
   if(url.pathname.startsWith('/api/tools')){
     if(request.method==='POST'){
       const body = await request.json()
@@ -42,12 +43,13 @@ async function handleRequest(request){
     }
   }
 
-  // 直接返回 index.html
+  // 直接返回静态页面
   return fetch(request)
 }
 
+// 获取工具列表
 async function getTools(){
-  const kv = await TOOLS_KV.get('tools')
+  const kv = await ownuse.get('tools') // KV命名空间 ownuse
   if(!kv) return DEFAULT_TOOLS
   try{
     return JSON.parse(kv)
@@ -56,6 +58,7 @@ async function getTools(){
   }
 }
 
+// 保存工具列表
 async function saveTools(tools){
-  await TOOLS_KV.put('tools',JSON.stringify(tools))
+  await ownuse.put('tools',JSON.stringify(tools))
 }
