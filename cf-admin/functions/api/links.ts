@@ -1,16 +1,24 @@
 export const onRequest: PagesFunction<Env> = async (ctx) => {
   const { request, env } = ctx;
   const method = request.method.toUpperCase();
+  
+  // GET 和 HEAD 请求不需要登录（公开访问）
+  if (method === 'GET' || method === 'HEAD') {
+    const data = await readData(env);
+    if (method === 'HEAD') {
+      // HEAD 请求用于检查管理员状态
+      const user = await auth(request, env.SESSION_SECRET);
+      return new Response('', { status: user ? 200 : 401 });
+    }
+    return json(data);
+  }
+  
+  // POST/PUT/DELETE 需要登录
   const user = await auth(request, env.SESSION_SECRET);
   if (!user) {
-    if (method === 'HEAD') return new Response('', { status: 401 });
     return json('未登录', 401);
   }
 
-  if (method === 'GET') {
-    const data = await readData(env);
-    return json(data);
-  }
   if (method === 'POST') {
     const { name, api } = await request.json().catch(() => ({}));
     if (!name || !api || !/^https?:\/\//i.test(api)) return json('名称或 API 无效', 400);
@@ -40,9 +48,6 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
     if (k && data.api_site[k]) delete data.api_site[k];
     await writeData(env, data);
     return json({ ok: true });
-  }
-  if (method === 'HEAD') {
-    return new Response('', { status: 200 });
   }
   return new Response('method not allowed', { status: 405 });
 };

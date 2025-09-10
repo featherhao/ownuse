@@ -9,11 +9,11 @@
 2. 记录该 Namespace 的 ID。
 
 ## 二、项目结构
-- `public/`：静态资源（`/` 登录，`/admin.html` 管理）
+- `public/`：静态资源（`/` 公开链接展示，`/admin.html` 管理页面）
 - `functions/`：Functions 自动路由
   - `api/login`：POST 登录 → 设置 `session` Cookie
   - `api/logout`：POST 退出 → 清除 `session`
-  - `api/links`：GET/POST/PUT/DELETE/HEAD（需登录）→ 读写 KV 键 `moontv:data`
+  - `api/links`：GET/HEAD 公开访问，POST/PUT/DELETE 需登录 → 读写 KV 键 `moontv:data`
 
 ## 三、环境变量与 KV 绑定
 在 Pages 项目设置中：
@@ -67,6 +67,12 @@ wrangler pages dev public --functions ./functions
 - 使用强随机 `SESSION_SECRET` 并定期更换。
 - 管理面板可叠加 Cloudflare Access 或 IP 限制。
 
-## 七、常见问题
+## 七、使用说明
+- 首页（`/`）：公开显示所有链接，无需登录即可查看
+- 管理功能：点击"管理"按钮，未登录时弹出登录框，登录后可直接在首页编辑/删除链接
+- 管理页面（`/admin.html`）：完整的管理界面，支持批量操作
+
+## 八、常见问题
 - 登录后仍回登录页：检查 Cookie、环境变量一致性、客户端时间。
 - 保存失败：确认 KV 绑定为 `KV`，`api` 需以 `http/https` 开头。
+- 公开访问：GET `/api/links` 无需登录，任何人都可以获取链接列表。
