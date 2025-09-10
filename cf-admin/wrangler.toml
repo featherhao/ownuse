@@ -3,7 +3,7 @@ compatibility_date = "2024-03-20"
 
 # Pages 部署配置
 [pages_build_output]
-# 这里的 dir 和 functions 路径是相对于 wrangler.toml 所在的目录
+# 这里的 dir 和 functions 路径是相对于 wrangler.toml 所在的目录2
 dir = "public"
 functions = "functions"
 
