@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>TVBox → MoonTV 转换器</title>
+<style>
+  body { font-family: sans-serif; margin: 20px; }
+  textarea { width: 100%; height: 200px; margin-bottom: 10px; }
+  button { padding: 10px 20px; font-size: 16px; }
+  pre { background: #f0f0f0; padding: 10px; }
+</style>
+</head>
+<body>
+
+<h2>TVBox → MoonTV 转换器</h2>
+<textarea id="inputJson" placeholder="粘贴 TVBox JSON 或含注释的 TVBox 配置"></textarea>
+<button onclick="convert()">转换</button>
+<button onclick="validateLinks()">校验链接有效性</button>
+<button onclick="copyOutput()">复制结果</button>
+<h3>MoonTV JSON 输出</h3>
+<pre id="outputJson"></pre>
+<h3>链接校验结果</h3>
+<div id="checkStatus"></div>
+
+<script>
+function convert() {
+  let raw = document.getElementById('inputJson').value || '';
+  let text = stripCommentsSafe(raw.replace(/^\uFEFF/, ''))
+    .replace(/,(\s*[\]}])/g, '$1');
+
+  // 兼容 JSON5：单引号、未引号键名
+  try {
+    JSON.parse(text);
+  } catch (_) {
+    text = convertSingleQuoteToDouble(text);
+    text = quoteUnquotedKeys(text);
+  }
+
+  const output = { cache_time: 7200, api_site: {} };
+  window.__lastOutput = output;
+  window.__lastValidation = {}; // 重置上次校验
+
+  try {
+    const tvbox = JSON.parse(text);
+
+    // 情况 A：已是 MoonTV 配置（包含 api_site 对象） => 仅为每个 api 补编号
+    if (tvbox && typeof tvbox === 'object' && tvbox.api_site && typeof tvbox.api_site === 'object') {
+      const keys = Object.keys(tvbox.api_site);
+      let seq = 1;
+      keys.forEach(k => {
+        const item = tvbox.api_site[k];
+        if (!item || typeof item !== 'object') return;
+        const api = item.api || item.url || item.ext;
+        if (!api || !/^https?:\/\//i.test(String(api))) return;
+        output.api_site[k] = {
+          name: String(item.name || k),
+          api: String(api),
+          id: seq++
+        };
+      });
+      document.getElementById('outputJson').textContent = JSON.stringify(output, null, 2);
+      document.getElementById('checkStatus').innerHTML = '';
+      return;
+    }
+
+    const register = (keyRaw, api, name) => {
+      if (!api || typeof api !== 'string') return;
+      if (!/^https?:\/\//i.test(api)) return;
+      const base = sanitizeKey((keyRaw || name || 'site').toString());
+      const unique = ensureUniqueKey(output.api_site, base);
+      output.api_site[unique] = { name: String(name || keyRaw || base), api: String(api) };
+    };
+
+    let found = false;
+    if (Array.isArray(tvbox?.urls)) {
+      tvbox.urls.forEach(item => {
+        if (!item) return;
+        register(item.key || item.name, item.url || item.api, item.name || item.key);
+      });
+      found = true;
+    }
+    if (Array.isArray(tvbox?.sites)) {
+      tvbox.sites.forEach(item => {
+        if (!item) return;
+        register(item.key || item.name, item.api || item.ext || item.url, item.name || item.key);
+      });
+      found = true;
+    }
+    if (!found) {
+      const arr = findFirstArrayWithApiEntries(tvbox);
+      if (arr) {
+        arr.forEach(item => register(item.key || item.name, item.api || item.ext || item.url, item.name || item.key));
+        found = true;
+      }
+    }
+
+    if (!found) {
+      alert('未找到可识别的源数组（urls/sites），请检查输入。');
+      return;
+    }
+
+    // 为新增条目编号
+    renumberIds(output);
+    document.getElementById('outputJson').textContent = JSON.stringify(output, null, 2);
+    // 清空校验区
+    document.getElementById('checkStatus').innerHTML = '';
+  } catch (e) {
+    alert('解析 JSON 出错: ' + e.message);
+  }
+}
+
+function copyOutput() {
+  const el = document.getElementById('outputJson');
+  const text = el.textContent || '';
+  if (!text.trim()) { alert('没有可复制的内容'); return; }
+  navigator.clipboard?.writeText(text).then(() => {
+    alert('已复制结果');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    alert('已复制结果');
+  });
+}
+
+// 下载相关逻辑已移除，根据需求改为校验后直接剔除无效并更新输出
+
+async function validateLinks() {
+  const outputText = document.getElementById('outputJson').textContent || '';
+  if (!outputText.trim()) { alert('请先转换生成输出'); return; }
+  let data;
+  try { data = JSON.parse(outputText); } catch (_) { alert('当前输出不是有效 JSON'); return; }
+  const entries = Object.entries(data.api_site || {});
+  if (!entries.length) { alert('没有可校验的链接'); return; }
+
+  const controller = new AbortController();
+  const timeoutMs = 6000;
+  const statuses = {};
+  document.getElementById('checkStatus').innerHTML = '正在校验 ' + entries.length + ' 个链接...';
+
+  const tasks = entries.map(async ([key, { api, name }]) => {
+    const url = api;
+    const res = await checkUrlReachable(url, timeoutMs).catch(err => ({ status: 'FAIL', detail: String(err) }));
+    statuses[url] = { key, name, status: res.status, code: res.code || '', error: res.detail || '' };
+  });
+  await Promise.allSettled(tasks);
+  window.__lastValidation = statuses;
+  // 过滤无效链接（仅保留 OK/CORS），并重新编号后更新输出
+  const filtered = { cache_time: data.cache_time || 7200, api_site: {} };
+  for (const [key, item] of entries) {
+    const st = statuses[item.api]?.status;
+    if (st === 'OK' || st === 'CORS') {
+      filtered.api_site[key] = item;
+    }
+  }
+  renumberIds(filtered);
+  window.__lastOutput = filtered;
+  document.getElementById('outputJson').textContent = JSON.stringify(filtered, null, 2);
+  renderStatusTable(statuses);
+}
+
+async function checkUrlReachable(url, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort('timeout'), timeoutMs);
+  try {
+    const resp = await fetch(url, { method: 'HEAD', mode: 'cors', redirect: 'follow', signal: controller.signal });
+    clearTimeout(timer);
+    if (resp.type === 'opaque') return { status: 'CORS' };
+    if (resp.ok) return { status: 'OK', code: resp.status };
+    // 某些服务不支持 HEAD，换 GET 简探测
+    if (resp.status === 405 || resp.status === 501) {
+      return await checkUrlByGet(url, timeoutMs);
+    }
+    return { status: 'FAIL', code: resp.status };
+  } catch (e) {
+    clearTimeout(timer);
+    // 再尝试 no-cors GET，若可到达将返回 opaque
+    try {
+      return await checkUrlByGet(url, timeoutMs);
+    } catch (e2) {
+      return { status: 'FAIL', detail: String(e2?.message || e2) };
+    }
+  }
+}
+
+async function checkUrlByGet(url, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort('timeout'), timeoutMs);
+  try {
+    const resp = await fetch(url, { method: 'GET', mode: 'cors', redirect: 'follow', signal: controller.signal });
+    clearTimeout(timer);
+    if (resp.type === 'opaque') return { status: 'CORS' };
+    if (resp.ok) return { status: 'OK', code: resp.status };
+    return { status: 'FAIL', code: resp.status };
+  } catch (e) {
+    clearTimeout(timer);
+    // 尝试 no-cors，不可读但可达则认为 CORS
+    try {
+      const resp2 = await fetch(url, { method: 'GET', mode: 'no-cors' });
+      return { status: 'CORS' };
+    } catch (e2) {
+      throw e2;
+    }
+  }
+}
+
+function renderStatusTable(statuses) {
+  const container = document.getElementById('checkStatus');
+  const rows = Object.entries(statuses).map(([api, s]) => {
+    const color = s.status === 'OK' ? '#0a0' : (s.status === 'CORS' ? '#a80' : '#c00');
+    const code = s.code ? (' (' + s.code + ')') : '';
+    const err = s.error ? (' - ' + s.error) : '';
+    return '<tr>' +
+      '<td style="padding:4px 8px;white-space:nowrap;">' + escapeHtml(s.key) + '</td>' +
+      '<td style="padding:4px 8px;white-space:nowrap;">' + escapeHtml(s.name || '') + '</td>' +
+      '<td style="padding:4px 8px;">' + escapeHtml(api) + '</td>' +
+      '<td style="padding:4px 8px;color:' + color + ';">' + s.status + code + err + '</td>' +
+    '</tr>';
+  }).join('');
+  container.innerHTML = '<table border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;font-size:14px;">' +
+    '<thead><tr><th style="padding:4px 8px;">键</th><th style="padding:4px 8px;">名称</th><th style="padding:4px 8px;">API</th><th style="padding:4px 8px;">状态</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table>';
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
+}
+
+function renumberIds(obj) {
+  if (!obj || !obj.api_site) return;
+  let seq = 1;
+  // 保留原有键顺序的情况下，按插入遍历顺序编号
+  for (const key in obj.api_site) {
+    if (Object.prototype.hasOwnProperty.call(obj.api_site, key)) {
+      const item = obj.api_site[key];
+      if (item && typeof item === 'object') {
+        item.id = seq++;
+      }
+    }
+  }
+}
+
+// —— 工具函数 ——
+function stripCommentsSafe(input) {
+  let out = '';
+  let i = 0, n = input.length;
+  let inString = false, quote = '';
+  let inLine = false, inBlock = false;
+  while (i < n) {
+    const ch = input[i];
+    const nx = i + 1 < n ? input[i + 1] : '';
+    if (inLine) { if (ch === '\n' || ch === '\r') { inLine = false; out += ch; } i++; continue; }
+    if (inBlock) { if (ch === '*' && nx === '/') { inBlock = false; i += 2; } else { i++; } continue; }
+    if (inString) {
+      out += ch;
+      if (ch === '\\') { if (i + 1 < n) { out += input[i + 1]; i += 2; continue; } }
+      if (ch === quote) { inString = false; quote = ''; }
+      i++; continue;
+    }
+    if (ch === '"' || ch === '\'') { inString = true; quote = ch; out += ch; i++; continue; }
+    if (ch === '/' && nx === '/') { inLine = true; i += 2; continue; }
+    if (ch === '/' && nx === '*') { inBlock = true; i += 2; continue; }
+    // 兼容以 # 开头的行注释（常见于某些源清单）
+    if (ch === '#') { inLine = true; i += 1; continue; }
+    out += ch; i++;
+  }
+  return out;
+}
+
+function convertSingleQuoteToDouble(source) {
+  return source.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, (m, inner) => {
+    const unescapedSingle = inner.replace(/\\'/g, "'");
+    const escapedDouble = unescapedSingle.replace(/"/g, '\\"');
+    return '"' + escapedDouble + '"';
+  });
+}
+
+function quoteUnquotedKeys(source) {
+  return source.replace(/([\{,]\s*)([A-Za-z_$][\w-]*)\s*:/g, '$1"$2":');
+}
+
+function sanitizeKey(name) {
+  return name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9_-]/g, '');
+}
+
+function ensureUniqueKey(map, base) {
+  if (!map[base]) return base;
+  let i = 1; while (map[base + '-' + i]) i++; return base + '-' + i;
+}
+
+function findFirstArrayWithApiEntries(obj) {
+  const queue = [obj];
+  while (queue.length) {
+    const cur = queue.shift();
+    if (Array.isArray(cur)) {
+      const ok = cur.some(x => x && typeof x === 'object' && (x.api || x.url || x.ext));
+      if (ok) return cur; continue;
+    }
+    if (cur && typeof cur === 'object') { for (const k in cur) queue.push(cur[k]); }
+  }
+  return null;
+}
+</script>
+
+</body>
+</html>
