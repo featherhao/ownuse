@@ -321,9 +321,8 @@
       "api": "https://api.guangsuapi.com/api.php/provide/vod/",
       "id": 64
     },
-    {
-  "cache_time": 7200,
-  "api_site": {
+  
+ 
     "bfzy": {
       "name": "暴风资源",
       "api": "https://bfzyapi.com/api.php/provide/vod",
@@ -454,7 +453,5 @@
       "api": "https://yutuzy10.com",
       "id": 26
     }
-  }
-}
   }
 }
