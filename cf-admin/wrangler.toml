@@ -1,17 +1,17 @@
 name = "cf-admin"
 compatibility_date = "2024-03-20"
 
-# Pages Functions 配置
 [build]
-command = ""              # 你没构建命令，保持空
-cwd = "."                 # 仓库根目录
-watch_dir = "public"      # 静态文件目录
-functions = "cf-admin/functions"  # 指定 Functions 目录
+command = ""                  # 无构建命令
+cwd = "cf-admin"              # Pages 构建上下文在子目录
+watch_dir = "public"          # 静态文件目录（相对于 cwd）
+functions = "functions"       # Functions 目录（相对于 cwd）
 
 [vars]
 ADMIN_USER = "admin"
 ADMIN_PASS = "change-me"
 SESSION_SECRET = "please-change-this-to-a-random-secret"
+
 
 [[kv_namespaces]]
 binding = "KV"
