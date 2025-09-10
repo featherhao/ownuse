@@ -1,0 +1,22 @@
+{
+    "cache_time": 9200,
+    "api_site": {
+         "_comment": "//原作者地址 https://raw.githubusercontent.com/666zmy/MoonTV/refs/heads/main/config.json,/////转换地址：https://base58.52zy.eu.org/",
+        "api_1": {
+            "name": "TV-1080资源",
+            "api": "https://api.1080zyku.com/inc/api_mac10.php",
+            "detail": "https://api.1080zyku.com"
+        },
+        "api_2": {
+            "name": "AV-155资源",
+            "api": "https://155api.com/api.php/provide/vod",
+            "detail": "https://155api.com"
+        },
+        "api_3": {
+            "name": "TV-360资源",
+            "api": "https://360zy.com/api.php/provide/vod",
+            "detail": "https://360zy.com"
+        },
+      
+    }
+}
