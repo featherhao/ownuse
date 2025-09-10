@@ -1,47 +1,32 @@
+import { TOOLS } from '@cloudflare/kv-asset-handler'
+
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
 
 async function handleRequest(request) {
   const url = new URL(request.url)
-  const targetUrl = url.searchParams.get('url')
-  const type = url.searchParams.get('type')
 
-  // type=api & url 有效 -> 返回 Base58 编码
-  if (type === 'api' && targetUrl) {
-    try {
-      const encoded = await fetchAndEncode(targetUrl)
-      return new Response(encoded, {
-        headers: {
-          'Content-Type': 'text/plain',
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
-    } catch (err) {
-      return new Response(`Error: ${err.message}`, { status: 500 })
+  // GET 获取工具列表
+  if(request.method==='GET'){
+    const list = await TOOLS.get('list') || '[]'
+    return new Response(list, {headers:{'Content-Type':'application/json'}})
+  }
+
+  // POST 添加工具
+  if(request.method==='POST'){
+    try{
+      const { name, url: toolUrl, password } = await request.json()
+      if(password !== ADMIN_PASSWORD) return new Response('Unauthorized', {status:401})
+
+      let list = JSON.parse(await TOOLS.get('list') || '[]')
+      list.push({ name, url: toolUrl })
+      await TOOLS.put('list', JSON.stringify(list))
+      return new Response(JSON.stringify({ success:true, list }), {headers:{'Content-Type':'application/json'}})
+    }catch(err){
+      return new Response(JSON.stringify({ success:false, message:err.message }), {headers:{'Content-Type':'application/json'}})
     }
   }
 
-  // 否则返回 HTML 页面（直接重定向到前端页面）
-  return Response.redirect('https://<你的Pages域名>/index.html?prefill=' + encodeURIComponent(targetUrl), 302)
-}
-
-// Base58 编码
-async function fetchAndEncode(targetUrl) {
-  const res = await fetch(targetUrl)
-  if (!res.ok) throw new Error('Fetch failed: ' + res.status)
-  const json = await res.json()
-  return base58Encode(JSON.stringify(json))
-}
-
-function base58Encode(str) {
-  const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
-  const bytes = new TextEncoder().encode(str)
-  let num = BigInt('0x' + Array.from(bytes).map(b => b.toString(16).padStart(2,'0')).join(''))
-  let result = ''
-  while (num > 0n) {
-    result = ALPHABET[Number(num % 58n)] + result
-    num /= 58n
-  }
-  return result || ALPHABET[0]
+  return new Response('Not Found',{status:404})
 }
