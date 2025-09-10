@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta charset="UTF-8">
 <title>常用工具集合</title>
 <style>
 body { font-family: Arial, sans-serif; margin: 40px; background:#f9f9f9; }
@@ -10,14 +11,71 @@ ul { list-style: none; padding: 0; }
 li { margin: 15px 0; }
 a { text-decoration: none; color: #1a73e8; font-size: 18px; }
 a:hover { text-decoration: underline; }
+button { margin-left: 10px; padding: 5px 10px; cursor: pointer; }
 </style>
 </head>
 <body>
 <h1>常用工具集合</h1>
-<p>点击下面的工具即可访问：</p>
-<ul>
-  <li><a href="https://base58.52zy.eu.org" target="_blank">JSON Base58 转换器</a></li>
-  <li><a href="jsontomoontv.html" target="_blank">TVBox → MoonTV 配置转换器</a></li>
-</ul>
+<ul id="toolList"></ul>
+<button onclick="showAdminLogin()">管理员登录</button>
+
+<script>
+// 默认工具列表
+let tools = [
+  { name: "JSON Base58 转换器", url: "https://base58.52zy.eu.org" },
+  { name: "TVBox → MoonTV 配置转换器", url: "jsontomoontv.html" }
+];
+
+// 从 LocalStorage 加载自定义工具
+if(localStorage.getItem('customTools')){
+  const custom = JSON.parse(localStorage.getItem('customTools'));
+  tools = tools.concat(custom);
+}
+
+// 渲染工具列表
+function renderTools() {
+  const ul = document.getElementById('toolList');
+  ul.innerHTML = '';
+  tools.forEach(tool => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = tool.url;
+    a.target = "_blank";
+    a.textContent = tool.name;
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
+}
+renderTools();
+
+// 管理员登录
+function showAdminLogin() {
+  const pwd = prompt("请输入管理员密码:");
+  if(pwd === "admin123"){ // 可自定义密码
+    showAdminPanel();
+  } else {
+    alert("密码错误");
+  }
+}
+
+// 管理面板
+function showAdminPanel() {
+  const name = prompt("请输入新工具名称:");
+  if(!name) return;
+  const url = prompt("请输入新工具链接:");
+  if(!url) return;
+  const newTool = { name, url };
+  
+  // 保存到 LocalStorage
+  let customTools = localStorage.getItem('customTools') ? JSON.parse(localStorage.getItem('customTools')) : [];
+  customTools.push(newTool);
+  localStorage.setItem('customTools', JSON.stringify(customTools));
+  
+  // 更新页面
+  tools.push(newTool);
+  renderTools();
+  alert("添加成功！");
+}
+</script>
 </body>
 </html>
