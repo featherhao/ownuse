@@ -39,6 +39,69 @@
             --box-shadow-base: 0 6px 20px rgba(0, 0, 0, 0.3);
             --box-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
+        /* 新增：筛选器样式 */
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.filter-container label {
+    font-weight: bold;
+    color: var(--heading-color);
+}
+
+.filter-container select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    min-width: 150px;
+    transition: all var(--transition-speed) ease;
+}
+
+.filter-container select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* 新增：骨架屏基础样式 */
+.skeleton-card {
+    background-color: var(--card-border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    height: 150px; /* 骨架屏高度 */
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0));
+    animation: shimmer 1.5s infinite;
+}
+
+.dark-mode .skeleton-card::after {
+    background: linear-gradient(90deg, rgba(63, 74, 77, 0) 0, rgba(63, 74, 77, 0.2) 20%, rgba(63, 74, 77, 0.5) 60%, rgba(63, 74, 77, 0));
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
 
         body {
             font-family: 'Noto Sans SC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
