@@ -56,7 +56,7 @@ function renderTools(tools) {
             <p>${tool.desc}</p>
             <div class="button-group">
                 ${tool.link ? `<a href="${tool.link}" target="_blank" rel="noopener noreferrer">前往 ${tool.name}</a>` : ''}
-                ${tool.copyScript ? `<button class="copy-button" data-script="${tool.copyScript}">复制脚本</button>` : ''}
+                ${tool.copyScript ? `<button class="copy-button" data-script="${tool.copyScript}">复制链接</button>` : ''}
                 <button class="favorite-button ${isFav ? 'active' : ''}" data-name="${tool.name}">
                     ${isFav ? '已收藏' : '收藏'}
                 </button>

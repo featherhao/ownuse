@@ -17,7 +17,7 @@ const toolsData = [
     },
     {
         name: "TVBox 配置转 MoonTV",
-        desc: "将 TVBox 配置链接转换为 MoonTV 兼容的格式，并删选有效连接",
+        desc: "将 TVBox 配置链接转换为 MoonTV 兼容的格式，并删选有效连接（点击复制链接可以复制默认配置）",
         link: "jsontomoontv.html",
         copyScript: "https://raw.githubusercontent.com/featherhao/ownuse/refs/heads/main/moontvtest.json",
         category: "影视工具",
