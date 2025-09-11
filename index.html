@@ -22,7 +22,7 @@
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            max-width: 800px;
+            max-width: 1200px; /* 增加最大宽度以容纳三列 */
             width: 100%;
             box-sizing: border-box;
         }
@@ -44,13 +44,21 @@
             transform: translateX(-50%);
             border-radius: 2px;
         }
-        .tool-section {
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 自动调整列数，每列最小300px */
+            gap: 20px; /* 卡片之间的间距 */
             margin-bottom: 30px;
+        }
+        .tool-section {
             padding: 20px;
             background-color: #f8f9fa;
             border-left: 5px solid #007bff;
             border-radius: 8px;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .tool-section:hover {
             transform: translateY(-5px);
@@ -65,11 +73,13 @@
         .tool-section p {
             margin-bottom: 15px;
             color: #555;
+            flex-grow: 1; /* 让描述内容占据更多空间 */
         }
         .tool-section .button-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin-top: auto; /* 将按钮组推到底部 */
         }
         .tool-section a, .tool-section button {
             display: inline-block;
@@ -82,17 +92,17 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            font-size: 16px; /* 增大字体 */
+            font-size: 16px;
         }
         .tool-section a:hover, .tool-section button:hover {
             background-color: #0056b3;
             transform: scale(1.03);
         }
         .copy-button {
-            background-color: #28a745 !important; /* 绿色按钮 */
+            background-color: #28a745 !important;
         }
         .copy-button:hover {
-            background-color: #218838 !important; /* 深绿色悬停效果 */
+            background-color: #218838 !important;
         }
         .footer {
             text-align: center;
@@ -105,7 +115,7 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #28a745; /* 绿色提示条 */
+            background-color: #28a745;
             color: #fff;
             padding: 10px 20px;
             border-radius: 5px;
@@ -118,6 +128,11 @@
         }
 
         /* 响应式设计 */
+        @media (max-width: 992px) {
+            .tool-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 中等屏幕两列 */
+            }
+        }
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -126,6 +141,9 @@
             h1 {
                 font-size: 1.8em;
                 margin-bottom: 30px;
+            }
+            .tool-grid {
+                grid-template-columns: 1fr; /* 小屏幕一列 */
             }
             .tool-section {
                 padding: 15px;
@@ -144,41 +162,42 @@
     <div class="container">
         <h1>常用工具合集</h1>
 
-        <div class="tool-section">
-            <h2>1. Base64 转换</h2>
-            <p>用于进行 Base64 编码和解码的在线工具，方便处理各种数据转换。（可以将moontv的配置文件转换成订阅，直接后台可以导入）</p>
-            <a href="https://base58.52zy.eu.org/" target="_blank">前往 Base64 转换工具</a>
-        </div>
+        <div class="tool-grid">
+            <div class="tool-section">
+                <h2>SH工具箱一键脚本</h2>
+                <p>moontv，libretv，rustdesk，勇哥脚本，等工具安装。</p>
+                <div class="button-group">
+                    <a href="https://github.com/featherhao/test" target="_blank">仓库地址</a>
+                    <button class="copy-button" onclick="copyToClipboard('bash <(curl -fsSL https://raw.githubusercontent.com/featherhao/test/refs/heads/main/menu.sh)')">复制脚本</button>
+                </div>
+            </div>
 
-        <div class="tool-section">
-            <h2>2. TVBox 配置转 MoonTV</h2>
-            <p>将 TVBox 的配置链接转换为 MoonTV 兼容的格式，并且可以删选出可以访问的有效连接（只检查网页连接状态，实际还要在moontv后台测试）。</p>
-        
-             <div class="button-group">
+            <div class="tool-section">
+                <h2>Base64 转换</h2>
+                <p>用于进行 Base64 编码和解码的在线工具，方便处理各种数据转换。（可以将moontv的配置文件转换成订阅，直接后台可以导入）</p>
+                <a href="https://base58.52zy.eu.org/" target="_blank">前往 Base64 转换工具</a>
+            </div>
+
+            <div class="tool-section">
+                <h2>TVBox 配置转 MoonTV</h2>
+                <p>将 TVBox 的配置链接转换为 MoonTV 兼容的格式，并且可以删选出可以访问的有效连接（只检查网页连接状态，实际还要在moontv后台测试）。</p>
+                <div class="button-group">
                     <a href="jsontomoontv.html" target="_blank">前往 TVBox 配置转换工具</a>
-                <button class="copy-button" onclick="copyToClipboard('https://raw.githubusercontent.com/featherhao/ownuse/refs/heads/main/moontvtest.json')">复制moontv配置地址</button>
+                    <button class="copy-button" onclick="copyToClipboard('https://raw.githubusercontent.com/featherhao/ownuse/refs/heads/main/moontvtest.json')">复制moontv配置地址</button>
+                </div>
             </div>
-        </div>
 
-        <div class="tool-section">
-            <h2>3. SH工具箱一键脚本</h2>
-            <p>moontv，libretv，rustdesk，勇哥脚本，等工具安装。</p>
-            <div class="button-group">
-                <a href="https://github.com/featherhao/test" target="_blank">仓库地址</a>
-                <button class="copy-button" onclick="copyToClipboard('bash <(curl -fsSL https://raw.githubusercontent.com/featherhao/test/refs/heads/main/menu.sh)')">复制脚本</button>
+            <div class="tool-section">
+                <h2>新增工具名称</h2>
+                <p>这里填写新增工具的简要描述。</p>
+                <a href="您新增工具的链接" target="_blank">前往 新增工具</a>
             </div>
-        </div>
 
-        <div class="tool-section">
-            <h2>4. 新增工具名称</h2>
-            <p>这里填写新增工具的简要描述。</p>
-            <a href="您新增工具的链接" target="_blank">前往 新增工具</a>
-        </div>
-
-        <div class="tool-section">
-            <h2>5. 新增工具名称</h2>
-            <p>这里填写新增工具的简要描述。</p>
-            <a href="您新增工具的链接" target="_blank">前往 新增工具</a>
+            <div class="tool-section">
+                <h2>新增工具名称</h2>
+                <p>这里填写新增工具的简要描述。</p>
+                <a href="您新增工具的链接" target="_blank">前往 新增工具</a>
+            </div>
         </div>
 
         <div class="footer">
