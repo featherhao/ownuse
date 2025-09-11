@@ -4,8 +4,8 @@ const toolsData = [
         desc: "moontv, libretv, rustdesk, 勇哥脚本等工具安装。",
         link: "https://github.com/featherhao/test",
         copyScript: "bash <(curl -fsSL https://raw.githubusercontent.com/featherhao/test/refs/heads/main/menu.sh)",
-        category: "系统工具", // 新增字段：分类
-        tags: "moontv, libretv, rustdesk, 勇哥, 脚本, linux, 安装" // 新增字段：标签
+        category: "系统工具",
+        tags: "moontv, libretv, rustdesk, 勇哥, 脚本, linux, 安装"
     },
     {
         name: "Base64 转换",
@@ -23,7 +23,6 @@ const toolsData = [
         category: "影视工具",
         tags: "tvbox, moontv, 影视, 配置, json"
     },
-    // 在这里添加新的工具，让更新变得更简单！
     {
         name: "新增工具A",
         desc: "这里填写新增工具A的简要描述",

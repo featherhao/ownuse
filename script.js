@@ -176,6 +176,9 @@ const filterAndSearchTools = debounce(() => {
  * 动态生成分类选项。
  */
 function populateCategories() {
+    // 关键改动：在添加新选项之前，先清空下拉框
+    DOM.categorySelect.innerHTML = '';
+
     // 1. 先添加 "所有工具" 选项
     const allOption = document.createElement('option');
     allOption.value = 'all';

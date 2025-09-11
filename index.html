@@ -7,6 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+
     <style>
         /* CSS变量定义主题，方便切换 */
         :root {
@@ -39,69 +42,82 @@
             --box-shadow-base: 0 6px 20px rgba(0, 0, 0, 0.3);
             --box-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
+
         /* 新增：筛选器样式 */
-.filter-container {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-}
+        .filter-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
 
-.filter-container label {
-    font-weight: bold;
-    color: var(--heading-color);
-}
+        .filter-container label {
+            font-weight: bold;
+            color: var(--heading-color);
+        }
 
-.filter-container select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1em;
-    background-color: var(--card-bg-color);
-    color: var(--text-color);
-    cursor: pointer;
-    min-width: 150px;
-    transition: all var(--transition-speed) ease;
-}
+        .filter-container select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            min-width: 150px;
+            transition: all var(--transition-speed) ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 20px;
+            padding-right: 30px;
+        }
 
-.filter-container select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
+        .filter-container select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
 
-/* 新增：骨架屏基础样式 */
-.skeleton-card {
-    background-color: var(--card-border-color);
-    border-radius: var(--border-radius);
-    padding: 20px;
-    height: 150px; /* 骨架屏高度 */
-    position: relative;
-    overflow: hidden;
-}
+        /* 深色模式的箭头颜色 */
+        body.dark-mode .filter-container select {
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23e6e6e6" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+        }
 
-.skeleton-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0));
-    animation: shimmer 1.5s infinite;
-}
+        /* 新增：骨架屏基础样式 */
+        .skeleton-card {
+            background-color: var(--card-border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            height: 150px;
+            position: relative;
+            overflow: hidden;
+        }
 
-.dark-mode .skeleton-card::after {
-    background: linear-gradient(90deg, rgba(63, 74, 77, 0) 0, rgba(63, 74, 77, 0.2) 20%, rgba(63, 74, 77, 0.5) 60%, rgba(63, 74, 77, 0));
-}
+        .skeleton-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0));
+            animation: shimmer 1.5s infinite;
+        }
 
-@keyframes shimmer {
-    100% {
-        transform: translateX(100%);
-    }
-}
+        .dark-mode .skeleton-card::after {
+            background: linear-gradient(90deg, rgba(63, 74, 77, 0) 0, rgba(63, 74, 77, 0.2) 20%, rgba(63, 74, 77, 0.5) 60%, rgba(63, 74, 77, 0));
+        }
 
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
 
         body {
             font-family: 'Noto Sans SC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -378,6 +394,13 @@
             <h2>我的收藏</h2>
             <div id="favorites-grid" class="favorites-grid"></div>
         </div>
+        <div class="filter-container">
+         <label for="category-select">按分类筛选：</label>
+        <select id="category-select">
+        <option value="all">所有工具</option>
+        </select>
+       </div>
+
 
         <div class="tool-grid" id="tool-grid">
             </div>
