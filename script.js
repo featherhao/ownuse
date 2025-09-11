@@ -10,7 +10,8 @@ const DOM = {
     favoritesContainer: document.getElementById('favorites-container'),
     favoritesGrid: document.getElementById('favorites-grid'),
     toolGrid: document.getElementById('tool-grid'),
-    copyFeedback: document.getElementById('copy-feedback')
+    copyFeedback: document.getElementById('copy-feedback'),
+    categorySelect: document.getElementById('category-select') // 新增：分类选择器
 };
 
 // 假设 toolsData 来自 data.js
@@ -20,6 +21,19 @@ let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 // =======================================================
 // === 2. 核心渲染函数 ===
 // =======================================================
+
+/**
+ * 渲染骨架屏。
+ * @param {number} count - 要渲染的骨架屏数量。
+ */
+function showSkeleton(count) {
+    DOM.toolGrid.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'tool-section skeleton-card';
+        DOM.toolGrid.appendChild(skeleton);
+    }
+}
 
 /**
  * 渲染工具网格，支持筛选和搜索。
@@ -132,7 +146,7 @@ function showFeedback(message) {
 }
 
 /**
- * 搜索逻辑，使用防抖。
+ * 搜索和分类筛选逻辑，使用防抖。
  */
 const debounce = (func, delay) => {
     let timeout;
@@ -144,14 +158,41 @@ const debounce = (func, delay) => {
 
 const filterAndSearchTools = debounce(() => {
     const searchTerm = DOM.searchInput.value.toLowerCase();
+    const selectedCategory = DOM.categorySelect.value;
+    
     const filteredTools = allTools.filter(tool => {
-        return (
-            (tool.name && tool.name.toLowerCase().includes(searchTerm)) ||
-            (tool.desc && tool.desc.toLowerCase().includes(searchTerm))
-        );
+        const matchesQuery = (tool.name && tool.name.toLowerCase().includes(searchTerm)) || 
+                             (tool.desc && tool.desc.toLowerCase().includes(searchTerm)) ||
+                             (tool.tags && tool.tags.toLowerCase().includes(searchTerm)); // 兼容 tags 字段
+        
+        const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
+        
+        return matchesQuery && matchesCategory;
     });
     renderTools(filteredTools);
 }, 300);
+
+/**
+ * 动态生成分类选项。
+ */
+function populateCategories() {
+    // 1. 先添加 "所有工具" 选项
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = '所有工具';
+    DOM.categorySelect.appendChild(allOption);
+    
+    // 2. 动态添加其他分类选项
+    const categories = new Set(allTools.map(tool => tool.category));
+    categories.forEach(category => {
+        if (category) { // 检查分类是否存在
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            DOM.categorySelect.appendChild(option);
+        }
+    });
+}
 
 // =======================================================
 // === 4. 事件监听器 ===
@@ -159,6 +200,9 @@ const filterAndSearchTools = debounce(() => {
 
 // 搜索框输入事件
 DOM.searchInput.addEventListener('input', filterAndSearchTools);
+
+// 分类选择器改变事件
+DOM.categorySelect.addEventListener('change', filterAndSearchTools);
 
 // 主题切换事件
 DOM.themeToggle.addEventListener('click', () => {
@@ -199,8 +243,15 @@ function initialize() {
         DOM.themeToggle.textContent = '深色模式';
     }
 
-    renderTools(allTools);
-    renderFavorites();
+    // 显示骨架屏
+    showSkeleton(6); 
+    
+    // 模拟数据加载，然后渲染页面
+    setTimeout(() => {
+        populateCategories();
+        renderTools(allTools);
+        renderFavorites();
+    }, 500); // 延迟0.5秒模拟加载过程
 }
 
 document.addEventListener('DOMContentLoaded', initialize);
