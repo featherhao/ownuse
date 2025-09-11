@@ -32,7 +32,7 @@ const toolsData = [
         copyScript: null
     },
     {
-        name: "新增工具C",
+        name: "新增工具D",
         desc: "这里填写新增工具A的简要描述",
         link: "您新增工具的链接",
         copyScript: null
