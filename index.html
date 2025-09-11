@@ -146,14 +146,18 @@
 
         <div class="tool-section">
             <h2>1. Base64 转换</h2>
-            <p>用于进行 Base64 编码和解码的在线工具，方便处理各种数据转换。</p>
+            <p>用于进行 Base64 编码和解码的在线工具，方便处理各种数据转换。（可以将moontv的配置文件转换成订阅，直接后台可以导入）</p>
             <a href="https://base58.52zy.eu.org/" target="_blank">前往 Base64 转换工具</a>
         </div>
 
         <div class="tool-section">
             <h2>2. TVBox 配置转 MoonTV</h2>
-            <p>将 TVBox 的配置链接转换为 MoonTV 兼容的格式，方便用户在不同播放器之间切换。</p>
-            <a href="jsontomoontv.html" target="_blank">前往 TVBox 配置转换工具</a>
+            <p>将 TVBox 的配置链接转换为 MoonTV 兼容的格式，并且可以删选出可以访问的有效连接（只检查网页连接状态，实际还要在moontv后台测试）。</p>
+        
+             <div class="button-group">
+                    <a href="jsontomoontv.html" target="_blank">前往 TVBox 配置转换工具</a>
+                <button class="copy-button" onclick="copyToClipboard('https://raw.githubusercontent.com/featherhao/ownuse/refs/heads/main/moontvtest.json')">复制moontv配置地址</button>
+            </div>
         </div>
 
         <div class="tool-section">
