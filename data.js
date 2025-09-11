@@ -30,5 +30,11 @@ const toolsData = [
         desc: "这里填写新增工具A的简要描述",
         link: "您新增工具的链接",
         copyScript: null
+    },
+    {
+        name: "新增工具C",
+        desc: "这里填写新增工具A的简要描述",
+        link: "您新增工具的链接",
+        copyScript: null
     }
 ];
