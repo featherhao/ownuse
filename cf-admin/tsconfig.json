@@ -8,10 +8,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "functions/api",
-    "rootDir": "functions/api"
+    "outDir": "./functions/api",
+    "rootDir": "./functions/api"
   },
-  "include": [
-    "functions/api/**/*.ts"
-  ]
+  "include": ["./functions/api/**/*.ts"]
 }
