@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc -p ."
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
