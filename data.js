@@ -24,12 +24,12 @@ const toolsData = [
         tags: "tvbox, moontv, 影视, 配置, json"
     },
     {
-        name: "新增工具A",
-        desc: "这里填写新增工具A的简要描述",
-        link: "您新增工具的链接",
+        name: "ProxyIP检测",
+        desc: "检测代理ip是否有效",
+        link: "https://cp.52zy.eu.org/",
         copyScript: null,
-        category: "实用工具",
-        tags: "示例, 新增工具"
+        category: "在线工具",
+        tags: "proxy, ip, 检测, 代理"
     },
     {
         name: "新增工具B",
