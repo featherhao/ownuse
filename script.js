@@ -117,7 +117,7 @@ function toggleFavorite(name) {
     }
     saveFavorites();
     renderFavorites();
-    renderTools(allTools); // 重新渲染主列表以更新按钮状态
+    filterAndSearchTools(); // 重新渲染主列表以更新按钮状态
 }
 
 /**
@@ -163,7 +163,7 @@ const filterAndSearchTools = debounce(() => {
     const filteredTools = allTools.filter(tool => {
         const matchesQuery = (tool.name && tool.name.toLowerCase().includes(searchTerm)) || 
                              (tool.desc && tool.desc.toLowerCase().includes(searchTerm)) ||
-                             (tool.tags && tool.tags.toLowerCase().includes(searchTerm)); // 兼容 tags 字段
+                             (tool.tags && tool.tags.toLowerCase().includes(searchTerm));
         
         const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
         
@@ -183,14 +183,12 @@ function populateCategories() {
     DOM.categorySelect.appendChild(allOption);
     
     // 2. 动态添加其他分类选项
-    const categories = new Set(allTools.map(tool => tool.category));
+    const categories = new Set(allTools.map(tool => tool.category).filter(Boolean)); // 过滤掉 undefined 或空字符串
     categories.forEach(category => {
-        if (category) { // 检查分类是否存在
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category;
-            DOM.categorySelect.appendChild(option);
-        }
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        DOM.categorySelect.appendChild(option);
     });
 }
 
@@ -249,8 +247,8 @@ function initialize() {
     // 模拟数据加载，然后渲染页面
     setTimeout(() => {
         populateCategories();
-        renderTools(allTools);
         renderFavorites();
+        filterAndSearchTools(); // 使用筛选函数来初始渲染，确保所有工具都显示
     }, 500); // 延迟0.5秒模拟加载过程
 }
 
