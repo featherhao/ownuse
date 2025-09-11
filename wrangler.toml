@@ -3,7 +3,7 @@ compatibility_date = "2024-03-20"
 
 # Pages 部署配置
 [pages_build_output]
-# 这里的 dir 和 functions 路径是相对于仓库根目录
+# 这里的 dir 和 functions 路径是相对于仓库根目录2
 dir = "cf-admin/public"
 functions = "cf-admin/functions/api"
 
