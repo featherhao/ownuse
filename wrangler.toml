@@ -1,0 +1,15 @@
+name = "cf-admin"
+compatibility_date = "2024-03-20"
+
+[pages_build_output]
+pages_build_output_dir = "cf-admin/public"
+functions = "cf-admin/functions/api"
+
+[vars]
+ADMIN_USER = "admin"
+ADMIN_PASS = "change-me"
+SESSION_SECRET = "please-change-this-to-a-random-secret"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "3d741a5137554831a6443233798472d4"
