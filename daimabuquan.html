@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码补全工具</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+        h1 { color: #333; text-align: center; }
+        .page-description { color: #666; text-align: center; margin-bottom: 20px; }
+        
+        .code-block { border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .code-block h2 { margin-top: 0; margin-bottom: 5px; color: #3498db; }
+        .block-description { font-size: 14px; color: #777; margin-bottom: 15px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .output-group { margin-top: 15px; }
+        pre { background: #eee; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+        code { color: #c0392b; }
+        .copy-btn { background: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; float: right; margin-top: -10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>代码补全工具</h1>
+        <p class="page-description">输入参数，自动生成完整的命令，方便复制粘贴。</p>
+        
+        <div class="code-block">
+            <h2>Bash 脚本</h2>
+            <p class="block-description">输入一个脚本的 URL，自动生成 `bash` 命令。</p>
+            <div class="input-group">
+                <label for="bashUrl">脚本URL：</label>
+                <input type="text" id="bashUrl" placeholder="https://..." oninput="updateCode('bash')">
+            </div>
+            <div class="output-group">
+                <button class="copy-btn" onclick="copyCode('bash')">复制</button>
+                <pre><code id="bashCode">bash &lt;(curl -fsSL ...)</code></pre>
+            </div>
+        </div>
+
+        <div class="code-block">
+            <h2>Docker</h2>
+            <p class="block-description">输入 Docker 镜像名称，自动生成 `docker run` 命令。</p>
+            <div class="input-group">
+                <label for="dockerImage">Docker镜像：</label>
+                <input type="text" id="dockerImage" placeholder="nginx" oninput="updateCode('docker')">
+            </div>
+            <div class="output-group">
+                <button class="copy-btn" onclick="copyCode('docker')">复制</button>
+                <pre><code id="dockerCode">docker run -d --name ...</code></pre>
+            </div>
+        </div>
+
+        <div class="code-block">
+            <h2>NPM</h2>
+            <p class="block-description">输入 NPM 包名，自动生成 `npm install` 命令。</p>
+            <div class="input-group">
+                <label for="npmPackage">NPM包名：</label>
+                <input type="text" id="npmPackage" placeholder="lodash" oninput="updateCode('npm')">
+            </div>
+            <div class="output-group">
+                <button class="copy-btn" onclick="copyCode('npm')">复制</button>
+                <pre><code id="npmCode">npm install ...</code></pre>
+            </div>
+        </div>
+
+        </div>
+
+    <script>
+        // ==========================================================
+        // === 唯一的 JavaScript 代码，你只需要在这里修改或添加配置 ===
+        // ==========================================================
+        const configs = {
+            'bash': {
+                // 'inputs' 数组里的字符串需要和 HTML 里 input 的 id 对应
+                inputs: ['bashUrl'],
+                // 核心函数：根据输入生成命令
+                template: (inputs) => {
+                    const url = inputs.bashUrl.value.trim();
+                    return url ? `bash <(curl -fsSL ${url})` : `bash <(curl -fsSL ...)`;
+                }
+            },
+            'docker': {
+                inputs: ['dockerImage'],
+                template: (inputs) => {
+                    const image = inputs.dockerImage.value.trim();
+                    return image ? `docker run -d --name my-${image} ${image}` : `docker run -d --name ...`;
+                }
+            },
+            'npm': {
+                inputs: ['npmPackage'],
+                template: (inputs) => {
+                    const pkg = inputs.npmPackage.value.trim();
+                    return pkg ? `npm install ${pkg}` : `npm install ...`;
+                }
+            },
+            // ==========================================================
+            // === 在这里添加新功能，只需复制上面的格式即可 ===
+            // ==========================================================
+            // '你的唯一ID': {
+            //     inputs: ['你的输入框ID'], // HTML 中的 input id="你的输入框ID"
+            //     template: (inputs) => {
+            //         const value = inputs.你的输入框ID.value.trim();
+            //         return value ? `你的命令 ${value}` : `命令预览...`;
+            //     }
+            // }
+        };
+
+        // ==========================================================
+        // === 以下是核心逻辑，请勿修改 ===
+        // ==========================================================
+        function updateCode(key) {
+            const inputs = {};
+            configs[key].inputs.forEach(id => {
+                inputs[id] = document.getElementById(id);
+            });
+            const code = configs[key].template(inputs);
+            document.getElementById(key + 'Code').textContent = code;
+        }
+
+        function copyCode(key) {
+            const code = document.getElementById(key + 'Code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('命令已复制！');
+            }).catch(() => {
+                alert('复制失败，请手动复制。');
+            });
+        }
+    </script>
+</body>
+</html>

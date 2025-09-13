@@ -32,12 +32,12 @@ const toolsData = [
         tags: "proxy, ip, 检测, 代理"
     },
     {
-        name: "新增工具B",
-        desc: "这里填写新增工具B的简要描述",
-        link: "您新增工具的链接",
+        name: "SH代码补全工具",
+        desc: "SH代码补全工具，输入参数，自动生成完整的命令，方便复制粘贴",
+        link: "daimabuquan.html",
         copyScript: null,
         category: "实用工具",
-        tags: "示例, 新增工具"
+        tags: "sh, 代码补全, 工具"
     },
     {
         name: "新增工具D",
