@@ -40,6 +40,14 @@ const toolsData = [
         tags: "sh, 代码补全, 工具"
     },
     {
+        name: "快递单号转换工具",
+        desc: "输入多个快递单号，自动转换为逗号分隔，以便于批量查询",
+        link: "danhaozhuanhuan.html",
+        copyScript: null,
+        category: "实用工具",
+        tags: "快递单号, 转换, 工具"
+    },
+    {
         name: "新增工具D",
         desc: "这里填写新增工具D的简要描述",
         link: "您新增工具的链接",
