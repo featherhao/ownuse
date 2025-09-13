@@ -48,6 +48,14 @@ const toolsData = [
         tags: "快递单号, 转换, 工具"
     },
     {
+        name: "IP信息查询",
+        desc: "MyIP - 更好的 IP 工具箱, 查询IP信息",
+        link: "https://ipcheck.ing/",
+        copyScript: null,
+        category: "实用工具",
+        tags: "ip, 查询, 工具"
+    },
+    {
         name: "新增工具D",
         desc: "这里填写新增工具D的简要描述",
         link: "您新增工具的链接",
