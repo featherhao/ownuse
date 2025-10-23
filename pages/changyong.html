@@ -1,41 +1,90 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linux & CasaOS 快速命令合集</title>
+  <style>
+    body {
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      background-color: #fafafa;
+      color: #222;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #0a84ff;
+    }
+    pre {
+      background-color: #1e1e1e;
+      color: #dcdcdc;
+      padding: 12px 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.95em;
+    }
+    code {
+      color: #ffb86c;
+    }
+    a {
+      color: #0078d4;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+  </style>
+</head>
 <body>
 
-github更换系统软件源：bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+<h1>Linux & CasaOS 快速命令合集</h1>
 
-#更新系统
-apt update
+<h2>更换系统软件源</h2>
+<pre><code>bash &lt;(curl -sSL https://linuxmirrors.cn/main.sh)</code></pre>
 
+<h2>更新系统</h2>
+<pre><code>apt update</code></pre>
 
-https://www.zxmls.lol/#/?id=ep254
-#一键安装CasaOS
-curl -fsSL https://get.casaos.io | sudo bash
-#CasaOS第三方应用商店源
-https://play.cuse.eu.org/Cp0204-AppStore-Play.zip
+<h2>参考链接</h2>
+<p><a href="https://www.zxmls.lol/#/?id=ep254" target="_blank">https://www.zxmls.lol/#/?id=ep254</a></p>
 
-casos 第三方软件源：
-https://play.cuse.eu.org/Cp0204-AppStore-Play.zip
-https://casaos-appstore.paodayag.dev/linuxserver.zip
-https://casaos-appstore.paodayag.dev/coolstore.zip
-https://play.cuse.eu.org/Cp0204-AppStore-Play-arm.zip
-https://paodayag.dev/casaos-appstore-edge.zip
-https://github.com/mr-manuel/CasaOS-HomeAutomation-AppStore/archive/refs/tags/latest.zip
-https://github.com/bigbeartechworld/big-bear-casaos/archive/refs/heads/master.zip
-https://github.com/mariosemes/CasaOS-TMCstore/archive/refs/heads/main.zip
-https://github.com/arch3rPro/Pentest-Docker/archive/refs/heads/master.zip
+<h2>一键安装 CasaOS</h2>
+<pre><code>curl -fsSL https://get.casaos.io | sudo bash</code></pre>
 
+<h2>CasaOS 第三方应用商店源</h2>
+<ul>
+  <li><a href="https://play.cuse.eu.org/Cp0204-AppStore-Play.zip">https://play.cuse.eu.org/Cp0204-AppStore-Play.zip</a></li>
+  <li><a href="https://casaos-appstore.paodayag.dev/linuxserver.zip">https://casaos-appstore.paodayag.dev/linuxserver.zip</a></li>
+  <li><a href="https://casaos-appstore.paodayag.dev/coolstore.zip">https://casaos-appstore.paodayag.dev/coolstore.zip</a></li>
+  <li><a href="https://play.cuse.eu.org/Cp0204-AppStore-Play-arm.zip">https://play.cuse.eu.org/Cp0204-AppStore-Play-arm.zip</a></li>
+  <li><a href="https://paodayag.dev/casaos-appstore-edge.zip">https://paodayag.dev/casaos-appstore-edge.zip</a></li>
+  <li><a href="https://github.com/mr-manuel/CasaOS-HomeAutomation-AppStore/archive/refs/tags/latest.zip">CasaOS HomeAutomation AppStore</a></li>
+  <li><a href="https://github.com/bigbeartechworld/big-bear-casaos/archive/refs/heads/master.zip">BigBear CasaOS</a></li>
+  <li><a href="https://github.com/mariosemes/CasaOS-TMCstore/archive/refs/heads/main.zip">TMC Store</a></li>
+  <li><a href="https://github.com/arch3rPro/Pentest-Docker/archive/refs/heads/master.zip">Pentest Docker</a></li>
+</ul>
 
-一键安装家庭影音：
+<h2>一键安装家庭影音系统</h2>
+<p><a href="https://github.com/LuckyPuppy514/automatic-theater" target="_blank">https://github.com/LuckyPuppy514/automatic-theater</a></p>
 
-https://github.com/LuckyPuppy514/automatic-theater
+<h2>Docker 部署 OpenWrt 系统</h2>
+<pre><code>docker network create -d macvlan \
+  --subnet=192.168.50.0/24 \
+  --gateway=192.168.50.2 \
+  -o parent=eth0 macnet
 
-
-Docker部署OpenWrt系统
-docker network create -d macvlan --subnet=192.168.50.0/24 --gateway=192.168.50.2 -o parent=eth0 macnet
-
-docker run --restart always --name OpenWrt -d --network macnet --ip 192.168.50.100 --privileged registry.cn-shanghai.aliyuncs.com/suling/openwrt:armv8 /sbin/init
-
+docker run --restart always --name OpenWrt -d \
+  --network macnet \
+  --ip 192.168.50.100 \
+  --privileged \
+  registry.cn-shanghai.aliyuncs.com/suling/openwrt:armv8 /sbin/init
+</code></pre>
 
 </body>
 </html>
