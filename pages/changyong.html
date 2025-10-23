@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<body>
+
+github更换系统软件源：bash <(curl -sSL https://linuxmirrors.cn/main.sh)
+
 #更新系统
 apt update
 
@@ -7,3 +13,29 @@ https://www.zxmls.lol/#/?id=ep254
 curl -fsSL https://get.casaos.io | sudo bash
 #CasaOS第三方应用商店源
 https://play.cuse.eu.org/Cp0204-AppStore-Play.zip
+
+casos 第三方软件源：
+https://play.cuse.eu.org/Cp0204-AppStore-Play.zip
+https://casaos-appstore.paodayag.dev/linuxserver.zip
+https://casaos-appstore.paodayag.dev/coolstore.zip
+https://play.cuse.eu.org/Cp0204-AppStore-Play-arm.zip
+https://paodayag.dev/casaos-appstore-edge.zip
+https://github.com/mr-manuel/CasaOS-HomeAutomation-AppStore/archive/refs/tags/latest.zip
+https://github.com/bigbeartechworld/big-bear-casaos/archive/refs/heads/master.zip
+https://github.com/mariosemes/CasaOS-TMCstore/archive/refs/heads/main.zip
+https://github.com/arch3rPro/Pentest-Docker/archive/refs/heads/master.zip
+
+
+一键安装家庭影音：
+
+https://github.com/LuckyPuppy514/automatic-theater
+
+
+Docker部署OpenWrt系统
+docker network create -d macvlan --subnet=192.168.50.0/24 --gateway=192.168.50.2 -o parent=eth0 macnet
+
+docker run --restart always --name OpenWrt -d --network macnet --ip 192.168.50.100 --privileged registry.cn-shanghai.aliyuncs.com/suling/openwrt:armv8 /sbin/init
+
+
+</body>
+</html>
