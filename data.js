@@ -56,6 +56,21 @@ const toolsData = [
         tags: "ip, 查询, 工具"
     },
     {
+        name: "常用备忘录",
+        desc: "常用的网址，代码等",
+        link: "pages/changyong.html",
+        copyScript: null,
+        category: "实用工具",
+        tags: "网址, 工具"
+    },
+      {
+        name: "新增工具D",
+        desc: "这里填写新增工具D的简要描述",
+        link: "您新增工具的链接",
+        copyScript: null,
+        category: "实用工具",
+        tags: "示例, 新增工具"
+    },  {
         name: "新增工具D",
         desc: "这里填写新增工具D的简要描述",
         link: "您新增工具的链接",
@@ -64,3 +79,7 @@ const toolsData = [
         tags: "示例, 新增工具"
     }
 ];
+
+
+
+pages/changyong.html
