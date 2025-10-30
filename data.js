@@ -1,7 +1,7 @@
 const toolsData = [
     {
         name: "SH工具箱一键脚本",
-        desc: "moontv, libretv, rustdesk, 勇哥脚本等工具安装。",
+        desc: "moontv, libretv, rustdesk, 勇哥脚本等工具安装。新vps要安装依赖：apt update 和 sudo apt install curl -y",
         link: "https://github.com/featherhao/test",
         copyScript: "bash <(curl -fsSL https://raw.githubusercontent.com/featherhao/test/refs/heads/main/menu.sh)",
         category: "系统工具",
