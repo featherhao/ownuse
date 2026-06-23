@@ -65,7 +65,7 @@ const toolsData = [
     },
         {
         name: "网盘资源名净化工具",
-        desc: "常用的网址，实用工具",
+        desc: "功能说明：本工具会自动清除网盘资源名中常见的干扰符号",
         link: "pages/panname.html",
         copyScript: null,
         category: "实用工具",
