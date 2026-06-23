@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网盘文件名去符号净化工具</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h2 {
+            text-align: center;
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+        .description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            background: #eef5fc;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            border-color: #4a90e2;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-weight: bold;
+        }
+        .btn-clean {
+            background-color: #4a90e2;
+        }
+        .btn-clean:hover {
+            background-color: #357abd;
+        }
+        .btn-copy {
+            background-color: #2ecc71;
+        }
+        .btn-copy:hover {
+            background-color: #27ae60;
+        }
+        .btn-clear {
+            background-color: #95a5a6;
+            max-width: 100px;
+        }
+        .btn-clear:hover {
+            background-color: #7f8c8d;
+        }
+        .hint {
+            font-size: 12px;
+            color: #999;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>网盘资源名净化工具</h2>
+    <div class="description">
+        <strong>功能说明：</strong>本工具会自动清除网盘资源名中常见的干扰符号（如：@、#、*、~、_、_空格等），并自动识别并裁剪掉开头的冗余数字编号（如“056606-”）。支持批量处理，一行一个。
+    </div>
+
+    <div class="form-group">
+        <label for="inputText">请输入原始网盘名称（支持多行批量输入）：</label>
+        <textarea id="inputText" placeholder="例如：056606-全@宗@起@飞@之@大@佬@到@宗@门@当@弟@子@ (54集) AI短剧"></textarea>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-clean" onclick="cleanText()">⚡ 净化名字</button>
+        <button class="btn-copy" onclick="copyText()">📋 复制结果</button>
+        <button class="btn-clear" onclick="clearAll()">清空</button>
+    </div>
+
+    <div class="form-group">
+        <label for="outputText">净化后的真实名字：</label>
+        <textarea id="outputText" readonly placeholder="净化后的结果将显示在这里..."></textarea>
+    </div>
+</div>
+
+<script>
+function cleanText() {
+    const input = document.getElementById('inputText').value;
+    if (!input.trim()) {
+        alert('请输入要处理的内容！');
+        return;
+    }
+
+    // 按行切分处理
+    const lines = input.split('\n');
+    const cleanedLines = lines.map(line => {
+        let text = line.trim();
+        if (!text) return '';
+
+        // 1. 去除开头的无意义数字和符号前缀，例如 "056606-" 或 "123_" 或 "【456】"
+        // 匹配开头是数字跟随着短横线、下划线、空格等，或者被括号包裹的数字
+        text = text.replace(/^\[?\d+\]?[-_\s~]*[-_\s~]/, '');
+        // 如果只是单纯的长数字加连字符，也去掉
+        text = text.replace(/^\d{4,}[-_\s]/, '');
+
+        // 2. 移除常见的混淆干扰符号（不影响括号和集数）
+        // 包含：@, #, *, ~, _, 空格(针对字中间的空格), 
+        // 注意：这里保留了中文括号（）和英文括号 () 确保类似 (54集) 不受影响
+        text = text.replace(/[@#\*_~\s]/g, '');
+
+        return text;
+    });
+
+    // 过滤掉空行并重新用换行符拼接
+    document.getElementById('outputText').value = cleanedLines.filter(line => line !== '').join('\n');
+}
+
+function copyText() {
+    const outputText = document.getElementById('outputText');
+    if (!outputText.value.trim()) {
+        alert('没有可复制的内容！');
+        return;
+    }
+    
+    outputText.select();
+    outputText.setSelectionRange(0, 99999); // 对移动端友好
+
+    try {
+        navigator.clipboard.writeText(outputText.value);
+        alert('复制成功！');
+    } catch (err) {
+        // 备用复制方案
+        document.execCommand('copy');
+        alert('复制成功！');
+    }
+}
+
+function clearAll() {
+    document.getElementById('inputText').value = '';
+    document.getElementById('outputText').value = '';
+}
+</script>
+
+</body>
+</html>
