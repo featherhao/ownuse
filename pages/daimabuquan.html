@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>代码补全与加速工具</title>
+    <title>GHProxy 补全与加速工具</title>
     <style>
         body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
@@ -32,12 +32,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>代码补全与加速工具</h1>
+        <h1>GHProxy 补全与加速工具</h1>
         <p class="page-description">国内外 VPS 通用 | 加速节点：<a href="https://js.52zy.eu.org/" target="_blank">js.52zy.eu.org</a></p>
         
         <div class="code-block" style="border-color: #3498db;">
             <h2 style="color: #3498db;">🚀 通用 GitHub 链接转换</h2>
-            <p class="block-description">输入原始 GitHub URL，可直接复制加速链接或原链接。</p>
+            <p class="block-description">将原始 GitHub 链接转换为带有 GHProxy 前缀的加速链接。</p>
             <div class="input-group">
                 <label for="rawUrl">原始 GitHub 链接：</label>
                 <input type="text" id="rawUrl" placeholder="https://github.com/..." oninput="updateAll('speedup')">
@@ -48,7 +48,7 @@
             </div>
             <div class="output-group">
                 <button class="copy-btn" onclick="copyCode('speedup')">复制链接</button>
-                <pre><code id="speedupCode">https://js.52zy.eu.org/https://github.com/...</code></pre>
+                <pre><code id="speedupCode">...</code></pre>
             </div>
         </div>
 
@@ -65,16 +65,16 @@
             </div>
             <div class="output-group">
                 <button class="copy-btn" onclick="copyCode('bash')">复制命令</button>
-                <pre><code id="bashCode">bash &lt;(curl -fsSL ...)</code></pre>
+                <pre><code id="bashCode">...</code></pre>
             </div>
         </div>
 
         <div class="code-block">
-            <h2>Docker 镜像补全</h2>
+            <h2>Docker 镜像补全 (基于 GHProxy 代理)</h2>
             <p class="block-description">输入 Docker 镜像名，生成带加速前缀或原生官方的 `docker run` 命令。</p>
             <div class="input-group">
                 <label for="dockerImage">Docker镜像：</label>
-                <input type="text" id="dockerImage" placeholder="nginx" oninput="updateAll('docker')">
+                <input type="text" id="dockerImage" placeholder="nginx:latest" oninput="updateAll('docker')">
             </div>
             <div class="tabs">
                 <button class="tab-btn active" id="docker-acc-tab" onclick="switchTab('docker', 'acc')">⚡ 国内加速版</button>
@@ -82,7 +82,7 @@
             </div>
             <div class="output-group">
                 <button class="copy-btn" onclick="copyCode('docker')">复制命令</button>
-                <pre><code id="dockerCode">docker run -d --name ...</code></pre>
+                <pre><code id="dockerCode">...</code></pre>
             </div>
         </div>
 
@@ -99,15 +99,18 @@
             </div>
             <div class="output-group">
                 <button class="copy-btn" onclick="copyCode('npm')">复制命令</button>
-                <pre><code id="npmCode">npm install ...</code></pre>
+                <pre><code id="npmCode">...</code></pre>
             </div>
         </div>
 
     </div>
 
     <script>
-        const PROXY_BASE = "https://js.52zy.eu.org/";
-        const DOCKER_PREFIX = PROXY_BASE.replace('https://', '');
+        // ==========================================================
+        // === 全局配置：只需修改这里的地址即可 ===
+        // ==========================================================
+        const PROXY_BASE = "https://js.52zy.eu.org/"; // 必须以 / 结尾
+        const DOCKER_PROXY = PROXY_BASE.replace('https://', '').replace('http://', ''); // 剔除协议作为 Docker Registry 地址
 
         // 记录每个板块当前选中的模式：'acc'(加速) 或 'raw'(原生)
         const currentModes = {
@@ -118,43 +121,47 @@
         };
 
         const configs = {
+            // 通用 GitHub 转换逻辑
             'speedup': {
                 inputs: ['rawUrl'],
                 template: (inputs, mode) => {
                     let url = inputs.rawUrl.value.trim();
-                    if (!url) return mode === 'acc' ? `${PROXY_BASE}https://github.com/...` : `https://github.com/...`;
+                    if (!url) return mode === 'acc' ? `${PROXY_BASE}https://github.com/用户名/仓库名` : `https://github.com/用户名/仓库名`;
                     if (url.startsWith(PROXY_BASE)) url = url.replace(PROXY_BASE, "");
                     return mode === 'acc' ? `${PROXY_BASE}${url}` : url;
                 }
             },
+            // Bash 脚本加速逻辑
             'bash': {
                 inputs: ['bashUrl'],
                 template: (inputs, mode) => {
                     let url = inputs.bashUrl.value.trim();
-                    if (!url) return mode === 'acc' ? `bash <(curl -fsSL ${PROXY_BASE}https://raw.githubusercontent.com/...sh)` : `bash <(curl -fsSL https://raw.githubusercontent.com/...sh)`;
+                    if (!url) return mode === 'acc' ? `bash <(curl -fsSL ${PROXY_BASE}https://raw.githubusercontent.com/username/repo/main/script.sh)` : `bash <(curl -fsSL https://raw.githubusercontent.com/username/repo/main/script.sh)`;
                     if (url.startsWith(PROXY_BASE)) url = url.replace(PROXY_BASE, "");
                     return mode === 'acc' ? `bash <(curl -fsSL ${PROXY_BASE}${url})` : `bash <(curl -fsSL ${url})`;
                 }
             },
+            // Docker 加速逻辑 (完美契合 GHProxy 代理机制)
             'docker': {
                 inputs: ['dockerImage'],
                 template: (inputs, mode) => {
                     let image = inputs.dockerImage.value.trim();
-                    if (!image) return mode === 'acc' ? `docker run -d --name my-nginx ${DOCKER_PREFIX}nginx:latest` : `docker run -d --name my-nginx nginx:latest`;
+                    if (!image) return mode === 'acc' ? `docker run -d --name my-nginx ${DOCKER_PROXY}library/nginx:latest` : `docker run -d --name my-nginx nginx:latest`;
                     
-                    if (image.startsWith(DOCKER_PREFIX)) image = image.replace(DOCKER_PREFIX, "");
+                    if (image.startsWith(DOCKER_PROXY)) image = image.replace(DOCKER_PROXY, "");
                     const nameParts = image.split('/');
                     const simpleName = nameParts[nameParts.length - 1].split(':')[0];
                     
-                    return mode === 'acc' ? `docker run -d --name my-${simpleName} ${DOCKER_PREFIX}${image}` : `docker run -d --name my-${simpleName} ${image}`;
+                    return mode === 'acc' ? `docker run -d --name my-${simpleName} ${DOCKER_PROXY}${image}` : `docker run -d --name my-${simpleName} ${image}`;
                 }
             },
+            // NPM 加速逻辑 (NPM 通常走官方或国内淘宝源，此处保留公共或特定代理转换)
             'npm': {
                 inputs: ['npmPackage'],
                 template: (inputs, mode) => {
                     const pkg = inputs.npmPackage.value.trim();
-                    if (!pkg) return mode === 'acc' ? `npm install lodash --registry=${PROXY_BASE}` : `npm install lodash`;
-                    return mode === 'acc' ? `npm install ${pkg} --registry=${PROXY_BASE}` : `npm install ${pkg}`;
+                    if (!pkg) return mode === 'acc' ? `npm install lodash --registry=https://registry.npmmirror.com` : `npm install lodash`;
+                    return mode === 'acc' ? `npm install ${pkg} --registry=https://registry.npmmirror.com` : `npm install ${pkg}`;
                 }
             }
         };
@@ -190,9 +197,9 @@
         function copyCode(key) {
             const code = document.getElementById(key + 'Code').textContent;
             navigator.clipboard.writeText(code).then(() => {
-                alert('复制成功！');
+                alert('已成功复制到剪贴板！');
             }).catch(() => {
-                alert('复制失败，请手动复制。');
+                alert('复制失败，请手动选择复制。');
             });
         }
     </script>
