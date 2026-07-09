@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHProxy 补全与加速工具</title>
+    <title>GHProxy 代码补全与加速工具</title>
     <style>
         body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+        .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 650px; }
         h1 { color: #333; text-align: center; margin-bottom: 5px; }
         .page-description { color: #666; text-align: center; margin-bottom: 25px; font-size: 14px; }
         .page-description a { color: #3498db; text-decoration: none; font-weight: bold; }
@@ -18,9 +18,9 @@
         label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; color: #444; }
         input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: monospace; }
         
-        /* 选项卡样式 */
+        /* 选项卡按钮样式 */
         .tabs { display: flex; margin-top: 15px; margin-bottom: -1px; }
-        .tab-btn { background: #e2e8f0; border: 1px solid #cbd5e0; border-bottom: none; padding: 6px 15px; font-size: 13px; cursor: pointer; border-top-left-radius: 4px; border-top-right-radius: 4px; color: #4a5568; margin-right: 4px; }
+        .tab-btn { background: #e2e8f0; border: 1px solid #cbd5e0; border-bottom: none; padding: 6px 15px; font-size: 13px; cursor: pointer; border-top-left-radius: 4px; border-top-right-radius: 4px; color: #4a5568; margin-right: 4px; transition: all 0.2s; }
         .tab-btn.active { background: #2d3748; color: #fff; border-color: #2d3748; font-weight: bold; }
         
         .output-group { position: relative; }
@@ -32,19 +32,19 @@
 </head>
 <body>
     <div class="container">
-        <h1>GHProxy 补全与加速工具</h1>
-        <p class="page-description">国内外 VPS 通用 | 加速节点：<a href="https://js.52zy.eu.org/" target="_blank">js.52zy.eu.org</a></p>
+        <h1>GHProxy 代码补全工具</h1>
+        <p class="page-description">国内外 VPS 通用控制台 | 当前加速源：<a href="https://js.52zy.eu.org/" target="_blank">js.52zy.eu.org</a></p>
         
         <div class="code-block" style="border-color: #3498db;">
-            <h2 style="color: #3498db;">🚀 通用 GitHub 链接转换</h2>
-            <p class="block-description">将原始 GitHub 链接转换为带有 GHProxy 前缀的加速链接。</p>
+            <h2 style="color: #3498db;">🚀 GitHub 链接转换</h2>
+            <p class="block-description">输入任意 GitHub 文件/Release 链接，自动生成对应环境的下载链接。</p>
             <div class="input-group">
-                <label for="rawUrl">原始 GitHub 链接：</label>
-                <input type="text" id="rawUrl" placeholder="https://github.com/..." oninput="updateAll('speedup')">
+                <label for="rawUrl">GitHub 原始链接：</label>
+                <input type="text" id="rawUrl" placeholder="https://github.com/user/repo/releases/download/v1.0/file.zip" oninput="updateAll('speedup')">
             </div>
             <div class="tabs">
-                <button class="tab-btn active" id="speedup-acc-tab" onclick="switchTab('speedup', 'acc')">⚡ 国内加速版</button>
-                <button class="tab-btn" id="speedup-raw-tab" onclick="switchTab('speedup', 'raw')">🌐 国外原生版</button>
+                <button class="tab-btn active" id="speedup-acc-tab" onclick="switchTab('speedup', 'acc')">⚡ 国内 VPS / 变流加速</button>
+                <button class="tab-btn" id="speedup-raw-tab" onclick="switchTab('speedup', 'raw')">🌐 国外 VPS / 直连原速</button>
             </div>
             <div class="output-group">
                 <button class="copy-btn" onclick="copyCode('speedup')">复制链接</button>
@@ -53,15 +53,15 @@
         </div>
 
         <div class="code-block">
-            <h2>Bash 脚本补全</h2>
-            <p class="block-description">输入脚本 URL，自动生成可在国内加速或国外直接运行的 `bash` 命令。</p>
+            <h2>Bash 一键脚本</h2>
+            <p class="block-description">自动组装 `curl` 下载并执行的 Shell 命令。</p>
             <div class="input-group">
-                <label for="bashUrl">脚本URL：</label>
-                <input type="text" id="bashUrl" placeholder="https://raw.githubusercontent.com/..." oninput="updateAll('bash')">
+                <label for="bashUrl">脚本 URL 地址：</label>
+                <input type="text" id="bashUrl" placeholder="https://raw.githubusercontent.com/user/repo/main/status.sh" oninput="updateAll('bash')">
             </div>
             <div class="tabs">
-                <button class="tab-btn active" id="bash-acc-tab" onclick="switchTab('bash', 'acc')">⚡ 国内加速版</button>
-                <button class="tab-btn" id="bash-raw-tab" onclick="switchTab('bash', 'raw')">🌐 国外原生版</button>
+                <button class="tab-btn active" id="bash-acc-tab" onclick="switchTab('bash', 'acc')">⚡ 国内 VPS 加速执行</button>
+                <button class="tab-btn" id="bash-raw-tab" onclick="switchTab('bash', 'raw')">🌐 国外 VPS 原生执行</button>
             </div>
             <div class="output-group">
                 <button class="copy-btn" onclick="copyCode('bash')">复制命令</button>
@@ -70,15 +70,15 @@
         </div>
 
         <div class="code-block">
-            <h2>Docker 镜像补全 (基于 GHProxy 代理)</h2>
-            <p class="block-description">输入 Docker 镜像名，生成带加速前缀或原生官方的 `docker run` 命令。</p>
+            <h2>Docker 部署补全</h2>
+            <p class="block-description">快速生成带加速 Registry 前缀或原生官方源的 `docker run` 命令。</p>
             <div class="input-group">
-                <label for="dockerImage">Docker镜像：</label>
-                <input type="text" id="dockerImage" placeholder="nginx:latest" oninput="updateAll('docker')">
+                <label for="dockerImage">Docker 镜像名称：</label>
+                <input type="text" id="dockerImage" placeholder="library/nginx:latest" oninput="updateAll('docker')">
             </div>
             <div class="tabs">
-                <button class="tab-btn active" id="docker-acc-tab" onclick="switchTab('docker', 'acc')">⚡ 国内加速版</button>
-                <button class="tab-btn" id="docker-raw-tab" onclick="switchTab('docker', 'raw')">🌐 国外原生版</button>
+                <button class="tab-btn active" id="docker-acc-tab" onclick="switchTab('docker', 'acc')">⚡ 国内 VPS 代理拉取</button>
+                <button class="tab-btn" id="docker-raw-tab" onclick="switchTab('docker', 'raw')">🌐 国外 VPS 官方拉取</button>
             </div>
             <div class="output-group">
                 <button class="copy-btn" onclick="copyCode('docker')">复制命令</button>
@@ -87,15 +87,15 @@
         </div>
 
         <div class="code-block">
-            <h2>NPM 安装补全</h2>
-            <p class="block-description">输入 NPM 包名，生成指定国内加速源或官方原生态安装命令。</p>
+            <h2>NPM 依赖安装</h2>
+            <p class="block-description">自动附加国内高速镜像源（淘宝镜像源）或原生 NPM 官方源。</p>
             <div class="input-group">
-                <label for="npmPackage">NPM包名：</label>
-                <input type="text" id="npmPackage" placeholder="lodash" oninput="updateAll('npm')">
+                <label for="npmPackage">NPM 包名：</label>
+                <input type="text" id="npmPackage" placeholder="express" oninput="updateAll('npm')">
             </div>
             <div class="tabs">
-                <button class="tab-btn active" id="npm-acc-tab" onclick="switchTab('npm', 'acc')">⚡ 国内加速版</button>
-                <button class="tab-btn" id="npm-raw-tab" onclick="switchTab('npm', 'raw')">🌐 国外原生版</button>
+                <button class="tab-btn active" id="npm-acc-tab" onclick="switchTab('npm', 'acc')">⚡ 国内环境 (淘宝源加速)</button>
+                <button class="tab-btn" id="npm-raw-tab" onclick="switchTab('npm', 'raw')">🌐 国外环境 (NPM 官方源)</button>
             </div>
             <div class="output-group">
                 <button class="copy-btn" onclick="copyCode('npm')">复制命令</button>
@@ -107,12 +107,12 @@
 
     <script>
         // ==========================================================
-        // === 全局配置：只需修改这里的地址即可 ===
+        // === 配置项：自动匹配你的 GHProxy 服务 ===
         // ==========================================================
-        const PROXY_BASE = "https://js.52zy.eu.org/"; // 必须以 / 结尾
-        const DOCKER_PROXY = PROXY_BASE.replace('https://', '').replace('http://', ''); // 剔除协议作为 Docker Registry 地址
+        const PROXY_BASE = "https://js.52zy.eu.org/"; 
+        const DOCKER_PROXY = "js.52zy.eu.org/"; // 用于 Docker Registry 拼接的前缀
 
-        // 记录每个板块当前选中的模式：'acc'(加速) 或 'raw'(原生)
+        // 状态记录器
         const currentModes = {
             speedup: 'acc',
             bash: 'acc',
@@ -121,64 +121,67 @@
         };
 
         const configs = {
-            // 通用 GitHub 转换逻辑
+            // 1. GitHub 链接转换
             'speedup': {
                 inputs: ['rawUrl'],
                 template: (inputs, mode) => {
                     let url = inputs.rawUrl.value.trim();
-                    if (!url) return mode === 'acc' ? `${PROXY_BASE}https://github.com/用户名/仓库名` : `https://github.com/用户名/仓库名`;
+                    if (!url) return mode === 'acc' ? `${PROXY_BASE}https://github.com/user/repo` : `https://github.com/user/repo`;
+                    
+                    // 过滤可能已经存在的代理前缀，防止无限套娃
                     if (url.startsWith(PROXY_BASE)) url = url.replace(PROXY_BASE, "");
                     return mode === 'acc' ? `${PROXY_BASE}${url}` : url;
                 }
             },
-            // Bash 脚本加速逻辑
+            // 2. Bash 脚本
             'bash': {
                 inputs: ['bashUrl'],
                 template: (inputs, mode) => {
                     let url = inputs.bashUrl.value.trim();
-                    if (!url) return mode === 'acc' ? `bash <(curl -fsSL ${PROXY_BASE}https://raw.githubusercontent.com/username/repo/main/script.sh)` : `bash <(curl -fsSL https://raw.githubusercontent.com/username/repo/main/script.sh)`;
+                    if (!url) return mode === 'acc' ? `bash <(curl -fsSL ${PROXY_BASE}https://raw.githubusercontent.com/user/repo/main/install.sh)` : `bash <(curl -fsSL https://raw.githubusercontent.com/user/repo/main/install.sh)`;
+                    
                     if (url.startsWith(PROXY_BASE)) url = url.replace(PROXY_BASE, "");
                     return mode === 'acc' ? `bash <(curl -fsSL ${PROXY_BASE}${url})` : `bash <(curl -fsSL ${url})`;
                 }
             },
-            // Docker 加速逻辑 (完美契合 GHProxy 代理机制)
+            // 3. Docker 镜像
             'docker': {
                 inputs: ['dockerImage'],
                 template: (inputs, mode) => {
                     let image = inputs.dockerImage.value.trim();
                     if (!image) return mode === 'acc' ? `docker run -d --name my-nginx ${DOCKER_PROXY}library/nginx:latest` : `docker run -d --name my-nginx nginx:latest`;
                     
+                    // 过滤清理可能包含的协议前缀
                     if (image.startsWith(DOCKER_PROXY)) image = image.replace(DOCKER_PROXY, "");
-                    const nameParts = image.split('/');
-                    const simpleName = nameParts[nameParts.length - 1].split(':')[0];
+                    if (image.startsWith("https://" + DOCKER_PROXY)) image = image.replace("https://" + DOCKER_PROXY, "");
+                    
+                    // 智能提取容器别名
+                    const parts = image.split('/');
+                    const simpleName = parts[parts.length - 1].split(':')[0];
                     
                     return mode === 'acc' ? `docker run -d --name my-${simpleName} ${DOCKER_PROXY}${image}` : `docker run -d --name my-${simpleName} ${image}`;
                 }
             },
-            // NPM 加速逻辑 (NPM 通常走官方或国内淘宝源，此处保留公共或特定代理转换)
+            // 4. NPM 安装
             'npm': {
                 inputs: ['npmPackage'],
                 template: (inputs, mode) => {
                     const pkg = inputs.npmPackage.value.trim();
-                    if (!pkg) return mode === 'acc' ? `npm install lodash --registry=https://registry.npmmirror.com` : `npm install lodash`;
+                    if (!pkg) return mode === 'acc' ? `npm install express --registry=https://registry.npmmirror.com` : `npm install express`;
                     return mode === 'acc' ? `npm install ${pkg} --registry=https://registry.npmmirror.com` : `npm install ${pkg}`;
                 }
             }
         };
 
-        // 切换选项卡
+        // 切换环境选项卡
         function switchTab(key, mode) {
             currentModes[key] = mode;
-            
-            // 更新按钮样式
             document.getElementById(`${key}-acc-tab`).classList.toggle('active', mode === 'acc');
             document.getElementById(`${key}-raw-tab`).classList.toggle('active', mode === 'raw');
-            
-            // 重新刷新生成的代码
             updateAll(key);
         }
 
-        // 核心更新逻辑
+        // 局部视图渲染
         function updateAll(key) {
             const inputs = {};
             configs[key].inputs.forEach(id => {
@@ -189,17 +192,18 @@
             document.getElementById(key + 'Code').textContent = code;
         }
 
-        // 初始页面加载时填充占位符
+        // 页面初始化
         window.onload = function() {
             Object.keys(configs).forEach(key => updateAll(key));
         };
 
+        // 复制控制
         function copyCode(key) {
             const code = document.getElementById(key + 'Code').textContent;
             navigator.clipboard.writeText(code).then(() => {
-                alert('已成功复制到剪贴板！');
+                alert('命令已复制，可前往 VPS 直接粘贴！');
             }).catch(() => {
-                alert('复制失败，请手动选择复制。');
+                alert('复制失败，请手动划选复制。');
             });
         }
     </script>
