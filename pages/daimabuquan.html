@@ -3,127 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>代码补全工具</title>
+    <title>代码补全与加速工具</title>
     <style>
         body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
-        h1 { color: #333; text-align: center; }
-        .page-description { color: #666; text-align: center; margin-bottom: 20px; }
+        h1 { color: #333; text-align: center; margin-bottom: 5px; }
+        .page-description { color: #666; text-align: center; margin-bottom: 25px; font-size: 14px; }
+        .page-description a { color: #3498db; text-decoration: none; font-weight: bold; }
         
-        .code-block { border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .code-block h2 { margin-top: 0; margin-bottom: 5px; color: #3498db; }
-        .block-description { font-size: 14px; color: #777; margin-bottom: 15px; }
+        .code-block { border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; background: #fafafa; }
+        .code-block h2 { margin-top: 0; margin-bottom: 5px; color: #2c3e50; font-size: 18px; }
+        .block-description { font-size: 13px; color: #777; margin-bottom: 15px; }
         .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .output-group { margin-top: 15px; }
-        pre { background: #eee; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
-        code { color: #c0392b; }
-        .copy-btn { background: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; float: right; margin-top: -10px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; color: #444; }
+        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: monospace; }
+        
+        /* 选项卡样式 */
+        .tabs { display: flex; margin-top: 15px; margin-bottom: -1px; }
+        .tab-btn { background: #e2e8f0; border: 1px solid #cbd5e0; border-bottom: none; padding: 6px 15px; font-size: 13px; cursor: pointer; border-top-left-radius: 4px; border-top-right-radius: 4px; color: #4a5568; margin-right: 4px; }
+        .tab-btn.active { background: #2d3748; color: #fff; border-color: #2d3748; font-weight: bold; }
+        
+        .output-group { position: relative; }
+        pre { background: #2d3748; padding: 15px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; margin: 0; border: 1px solid #2d3748;}
+        code { color: #cbd5e0; font-family: monospace; font-size: 14px; }
+        .copy-btn { background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; float: right; margin-top: 6px; margin-right: 10px; font-size: 12px; position: relative; z-index: 10; }
+        .copy-btn:hover { background: #2980b9; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>代码补全工具</h1>
-        <p class="page-description">输入参数，自动生成完整的命令，方便复制粘贴。</p>
+        <h1>代码补全与加速工具</h1>
+        <p class="page-description">国内外 VPS 通用 | 加速节点：<a href="https://js.52zy.eu.org/" target="_blank">js.52zy.eu.org</a></p>
         
-        <div class="code-block">
-            <h2>Bash 脚本</h2>
-            <p class="block-description">输入一个脚本的 URL，自动生成 `bash` 命令。</p>
+        <div class="code-block" style="border-color: #3498db;">
+            <h2 style="color: #3498db;">🚀 通用 GitHub 链接转换</h2>
+            <p class="block-description">输入原始 GitHub URL，可直接复制加速链接或原链接。</p>
             <div class="input-group">
-                <label for="bashUrl">脚本URL：</label>
-                <input type="text" id="bashUrl" placeholder="https://..." oninput="updateCode('bash')">
+                <label for="rawUrl">原始 GitHub 链接：</label>
+                <input type="text" id="rawUrl" placeholder="https://github.com/..." oninput="updateAll('speedup')">
+            </div>
+            <div class="tabs">
+                <button class="tab-btn active" id="speedup-acc-tab" onclick="switchTab('speedup', 'acc')">⚡ 国内加速版</button>
+                <button class="tab-btn" id="speedup-raw-tab" onclick="switchTab('speedup', 'raw')">🌐 国外原生版</button>
             </div>
             <div class="output-group">
-                <button class="copy-btn" onclick="copyCode('bash')">复制</button>
+                <button class="copy-btn" onclick="copyCode('speedup')">复制链接</button>
+                <pre><code id="speedupCode">https://js.52zy.eu.org/https://github.com/...</code></pre>
+            </div>
+        </div>
+
+        <div class="code-block">
+            <h2>Bash 脚本补全</h2>
+            <p class="block-description">输入脚本 URL，自动生成可在国内加速或国外直接运行的 `bash` 命令。</p>
+            <div class="input-group">
+                <label for="bashUrl">脚本URL：</label>
+                <input type="text" id="bashUrl" placeholder="https://raw.githubusercontent.com/..." oninput="updateAll('bash')">
+            </div>
+            <div class="tabs">
+                <button class="tab-btn active" id="bash-acc-tab" onclick="switchTab('bash', 'acc')">⚡ 国内加速版</button>
+                <button class="tab-btn" id="bash-raw-tab" onclick="switchTab('bash', 'raw')">🌐 国外原生版</button>
+            </div>
+            <div class="output-group">
+                <button class="copy-btn" onclick="copyCode('bash')">复制命令</button>
                 <pre><code id="bashCode">bash &lt;(curl -fsSL ...)</code></pre>
             </div>
         </div>
 
         <div class="code-block">
-            <h2>Docker</h2>
-            <p class="block-description">输入 Docker 镜像名称，自动生成 `docker run` 命令。</p>
+            <h2>Docker 镜像补全</h2>
+            <p class="block-description">输入 Docker 镜像名，生成带加速前缀或原生官方的 `docker run` 命令。</p>
             <div class="input-group">
                 <label for="dockerImage">Docker镜像：</label>
-                <input type="text" id="dockerImage" placeholder="nginx" oninput="updateCode('docker')">
+                <input type="text" id="dockerImage" placeholder="nginx" oninput="updateAll('docker')">
+            </div>
+            <div class="tabs">
+                <button class="tab-btn active" id="docker-acc-tab" onclick="switchTab('docker', 'acc')">⚡ 国内加速版</button>
+                <button class="tab-btn" id="docker-raw-tab" onclick="switchTab('docker', 'raw')">🌐 国外原生版</button>
             </div>
             <div class="output-group">
-                <button class="copy-btn" onclick="copyCode('docker')">复制</button>
+                <button class="copy-btn" onclick="copyCode('docker')">复制命令</button>
                 <pre><code id="dockerCode">docker run -d --name ...</code></pre>
             </div>
         </div>
 
         <div class="code-block">
-            <h2>NPM</h2>
-            <p class="block-description">输入 NPM 包名，自动生成 `npm install` 命令。</p>
+            <h2>NPM 安装补全</h2>
+            <p class="block-description">输入 NPM 包名，生成指定国内加速源或官方原生态安装命令。</p>
             <div class="input-group">
                 <label for="npmPackage">NPM包名：</label>
-                <input type="text" id="npmPackage" placeholder="lodash" oninput="updateCode('npm')">
+                <input type="text" id="npmPackage" placeholder="lodash" oninput="updateAll('npm')">
+            </div>
+            <div class="tabs">
+                <button class="tab-btn active" id="npm-acc-tab" onclick="switchTab('npm', 'acc')">⚡ 国内加速版</button>
+                <button class="tab-btn" id="npm-raw-tab" onclick="switchTab('npm', 'raw')">🌐 国外原生版</button>
             </div>
             <div class="output-group">
-                <button class="copy-btn" onclick="copyCode('npm')">复制</button>
+                <button class="copy-btn" onclick="copyCode('npm')">复制命令</button>
                 <pre><code id="npmCode">npm install ...</code></pre>
             </div>
         </div>
 
-        </div>
+    </div>
 
     <script>
-        // ==========================================================
-        // === 唯一的 JavaScript 代码，你只需要在这里修改或添加配置 ===
-        // ==========================================================
+        const PROXY_BASE = "https://js.52zy.eu.org/";
+        const DOCKER_PREFIX = PROXY_BASE.replace('https://', '');
+
+        // 记录每个板块当前选中的模式：'acc'(加速) 或 'raw'(原生)
+        const currentModes = {
+            speedup: 'acc',
+            bash: 'acc',
+            docker: 'acc',
+            npm: 'acc'
+        };
+
         const configs = {
+            'speedup': {
+                inputs: ['rawUrl'],
+                template: (inputs, mode) => {
+                    let url = inputs.rawUrl.value.trim();
+                    if (!url) return mode === 'acc' ? `${PROXY_BASE}https://github.com/...` : `https://github.com/...`;
+                    if (url.startsWith(PROXY_BASE)) url = url.replace(PROXY_BASE, "");
+                    return mode === 'acc' ? `${PROXY_BASE}${url}` : url;
+                }
+            },
             'bash': {
-                // 'inputs' 数组里的字符串需要和 HTML 里 input 的 id 对应
                 inputs: ['bashUrl'],
-                // 核心函数：根据输入生成命令
-                template: (inputs) => {
-                    const url = inputs.bashUrl.value.trim();
-                    return url ? `bash <(curl -fsSL ${url})` : `bash <(curl -fsSL ...)`;
+                template: (inputs, mode) => {
+                    let url = inputs.bashUrl.value.trim();
+                    if (!url) return mode === 'acc' ? `bash <(curl -fsSL ${PROXY_BASE}https://raw.githubusercontent.com/...sh)` : `bash <(curl -fsSL https://raw.githubusercontent.com/...sh)`;
+                    if (url.startsWith(PROXY_BASE)) url = url.replace(PROXY_BASE, "");
+                    return mode === 'acc' ? `bash <(curl -fsSL ${PROXY_BASE}${url})` : `bash <(curl -fsSL ${url})`;
                 }
             },
             'docker': {
                 inputs: ['dockerImage'],
-                template: (inputs) => {
-                    const image = inputs.dockerImage.value.trim();
-                    return image ? `docker run -d --name my-${image} ${image}` : `docker run -d --name ...`;
+                template: (inputs, mode) => {
+                    let image = inputs.dockerImage.value.trim();
+                    if (!image) return mode === 'acc' ? `docker run -d --name my-nginx ${DOCKER_PREFIX}nginx:latest` : `docker run -d --name my-nginx nginx:latest`;
+                    
+                    if (image.startsWith(DOCKER_PREFIX)) image = image.replace(DOCKER_PREFIX, "");
+                    const nameParts = image.split('/');
+                    const simpleName = nameParts[nameParts.length - 1].split(':')[0];
+                    
+                    return mode === 'acc' ? `docker run -d --name my-${simpleName} ${DOCKER_PREFIX}${image}` : `docker run -d --name my-${simpleName} ${image}`;
                 }
             },
             'npm': {
                 inputs: ['npmPackage'],
-                template: (inputs) => {
+                template: (inputs, mode) => {
                     const pkg = inputs.npmPackage.value.trim();
-                    return pkg ? `npm install ${pkg}` : `npm install ...`;
+                    if (!pkg) return mode === 'acc' ? `npm install lodash --registry=${PROXY_BASE}` : `npm install lodash`;
+                    return mode === 'acc' ? `npm install ${pkg} --registry=${PROXY_BASE}` : `npm install ${pkg}`;
                 }
-            },
-            // ==========================================================
-            // === 在这里添加新功能，只需复制上面的格式即可 ===
-            // ==========================================================
-            // '你的唯一ID': {
-            //     inputs: ['你的输入框ID'], // HTML 中的 input id="你的输入框ID"
-            //     template: (inputs) => {
-            //         const value = inputs.你的输入框ID.value.trim();
-            //         return value ? `你的命令 ${value}` : `命令预览...`;
-            //     }
-            // }
+            }
         };
 
-        // ==========================================================
-        // === 以下是核心逻辑，请勿修改 ===
-        // ==========================================================
-        function updateCode(key) {
+        // 切换选项卡
+        function switchTab(key, mode) {
+            currentModes[key] = mode;
+            
+            // 更新按钮样式
+            document.getElementById(`${key}-acc-tab`).classList.toggle('active', mode === 'acc');
+            document.getElementById(`${key}-raw-tab`).classList.toggle('active', mode === 'raw');
+            
+            // 重新刷新生成的代码
+            updateAll(key);
+        }
+
+        // 核心更新逻辑
+        function updateAll(key) {
             const inputs = {};
             configs[key].inputs.forEach(id => {
                 inputs[id] = document.getElementById(id);
             });
-            const code = configs[key].template(inputs);
+            const mode = currentModes[key];
+            const code = configs[key].template(inputs, mode);
             document.getElementById(key + 'Code').textContent = code;
         }
+
+        // 初始页面加载时填充占位符
+        window.onload = function() {
+            Object.keys(configs).forEach(key => updateAll(key));
+        };
 
         function copyCode(key) {
             const code = document.getElementById(key + 'Code').textContent;
             navigator.clipboard.writeText(code).then(() => {
-                alert('命令已复制！');
+                alert('复制成功！');
             }).catch(() => {
                 alert('复制失败，请手动复制。');
             });
